@@ -96,7 +96,7 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
         <CardContent className="flex flex-col items-center justify-center py-8">
           <List className="h-12 w-12 text-muted-foreground mb-4" />
           <p className="text-muted-foreground text-center">
-            Nenhuma venda registrada ainda.
+            Nenhuma venda registrada hoje.
             <br />
             Registre sua primeira venda usando o formulário acima.
           </p>
