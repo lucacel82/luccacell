@@ -140,6 +140,19 @@ export const useSales = () => {
     };
   };
 
+  const getDailySales = (): Sale[] => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    return sales.filter(sale => {
+      const saleDate = new Date(sale.data_venda);
+      return saleDate >= today && saleDate < tomorrow;
+    });
+  };
+
   const getWeeklyReport = (): WeeklyReport => {
     const now = new Date();
     const startOfWeek = new Date(now);
@@ -171,6 +184,7 @@ export const useSales = () => {
     updateSale,
     deleteSale,
     getDailyReport,
+    getDailySales,
     getWeeklyReport,
   };
 };

@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, ShoppingBag } from 'lucide-react';
+import { BarChart3, ShoppingBag, FileText } from 'lucide-react';
 import { SaleForm } from '@/components/SaleForm';
 import { SalesList } from '@/components/SalesList';
 import { WeeklyReport } from '@/components/WeeklyReport';
 import { DailyReport } from '@/components/DailyReport';
+import { CashClosing } from '@/components/CashClosing';
 import { useSales } from '@/hooks/useSales';
 
 const Index = () => {
-  const { sales, loading, addSale, updateSale, deleteSale, getDailyReport, getWeeklyReport } = useSales();
+  const { sales, loading, addSale, updateSale, deleteSale, getDailyReport, getDailySales, getWeeklyReport } = useSales();
   const [activeTab, setActiveTab] = useState('sales');
 
   const dailyReport = getDailyReport();
+  const dailySales = getDailySales();
   const weeklyReport = getWeeklyReport();
 
   return (
@@ -45,7 +47,7 @@ const Index = () => {
         <DailyReport report={dailyReport} />
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-secondary border border-border">
+          <TabsList className="grid w-full grid-cols-3 bg-secondary border border-border">
             <TabsTrigger 
               value="sales" 
               className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
@@ -59,6 +61,13 @@ const Index = () => {
             >
               <BarChart3 className="h-4 w-4" />
               Relatório <span className="hidden sm:inline">Semanal</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="closing" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+            >
+              <FileText className="h-4 w-4" />
+              Fechar <span className="hidden sm:inline">Caixa</span>
             </TabsTrigger>
           </TabsList>
 
@@ -79,6 +88,13 @@ const Index = () => {
 
           <TabsContent value="report" className="mt-6">
             <WeeklyReport report={weeklyReport} />
+          </TabsContent>
+
+          <TabsContent value="closing" className="mt-6">
+            <CashClosing 
+              dailySales={dailySales} 
+              dailyTotal={dailyReport.totalValue} 
+            />
           </TabsContent>
         </Tabs>
       </div>
