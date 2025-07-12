@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Smartphone, BarChart3, ShoppingBag } from 'lucide-react';
+import { BarChart3, ShoppingBag } from 'lucide-react';
 import { SaleForm } from '@/components/SaleForm';
 import { SalesList } from '@/components/SalesList';
 import { WeeklyReport } from '@/components/WeeklyReport';
@@ -18,15 +18,21 @@ const Index = () => {
       {/* Header */}
       <div className="bg-gradient-dark border-b border-border shadow-dark">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-gold rounded-lg p-3">
-              <Smartphone className="h-8 w-8 text-primary-foreground" />
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0">
+              <img 
+                src="/lovable-uploads/6bfd736e-2813-4131-a5a5-76c6df038df8.png" 
+                alt="Lucca Cell Logo" 
+                className="h-16 w-auto object-contain"
+              />
             </div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-primary">
-                Lucca Cell
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl md:text-2xl font-bold text-primary truncate">
+                Sistema de Controle de Vendas
               </h1>
-              <p className="text-muted-foreground">Sistema de Controle de Vendas</p>
+              <p className="text-sm md:text-base text-muted-foreground">
+                Assistência Técnica & Acessórios
+              </p>
             </div>
           </div>
         </div>
