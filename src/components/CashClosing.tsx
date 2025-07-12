@@ -31,6 +31,13 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
 
   const generatePDF = async () => {
     try {
+      // Verificar se há dados antes de gerar o PDF
+      console.log('Gerando PDF com dados:', { dailySales, dailyTotal });
+      
+      if (!dailySales) {
+        throw new Error('Dados de vendas não estão disponíveis');
+      }
+
       const doc = new jsPDF();
       
       // Header
@@ -48,6 +55,11 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
       if (dailySales.length === 0) {
         doc.setFontSize(12);
         doc.text('Nenhuma venda registrada hoje.', 20, 60);
+        
+        // Ainda mostrar o total (que será R$ 0,00)
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Total do Dia: ${formatCurrency(dailyTotal)}`, 20, 80);
       } else {
         // Table data
         const tableData = dailySales.map(sale => [
@@ -90,12 +102,13 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
       doc.setFont('helvetica', 'normal');
       doc.text('Relatório gerado automaticamente pelo Sistema Lucca Cell', 105, pageHeight - 10, { align: 'center' });
 
+      console.log('PDF gerado com sucesso');
       return doc;
     } catch (error) {
-      console.error('Erro ao gerar PDF:', error);
+      console.error('Erro detalhado ao gerar PDF:', error);
       toast({
         title: "Erro",
-        description: "Não foi possível gerar o PDF.",
+        description: `Erro ao gerar PDF: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
         variant: "destructive",
       });
       return null;
@@ -103,24 +116,38 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
   };
 
   const downloadPDF = async () => {
-    const doc = await generatePDF();
-    if (doc) {
-      doc.save(`fechamento-caixa-${getCurrentDate().replace(/\//g, '-')}.pdf`);
+    try {
+      console.log('Iniciando download do PDF...');
+      const doc = await generatePDF();
+      if (doc) {
+        const fileName = `fechamento-caixa-${getCurrentDate().replace(/\//g, '-')}.pdf`;
+        doc.save(fileName);
+        console.log('Download realizado:', fileName);
+        toast({
+          title: "Sucesso",
+          description: "PDF baixado com sucesso!",
+        });
+      }
+    } catch (error) {
+      console.error('Erro no download:', error);
       toast({
-        title: "Sucesso",
-        description: "PDF baixado com sucesso!",
+        title: "Erro",
+        description: "Erro ao baixar o PDF.",
+        variant: "destructive",
       });
     }
   };
 
   const sharePDF = async () => {
-    const doc = await generatePDF();
-    if (!doc) return;
-
     try {
+      console.log('Iniciando compartilhamento do PDF...');
+      const doc = await generatePDF();
+      if (!doc) return;
+
       // Convert PDF to blob
       const pdfBlob = doc.output('blob');
-      const file = new File([pdfBlob], `fechamento-caixa-${getCurrentDate().replace(/\//g, '-')}.pdf`, {
+      const fileName = `fechamento-caixa-${getCurrentDate().replace(/\//g, '-')}.pdf`;
+      const file = new File([pdfBlob], fileName, {
         type: 'application/pdf',
       });
 
@@ -132,12 +159,14 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
           files: [file],
         });
         
+        console.log('Compartilhamento realizado com sucesso');
         toast({
           title: "Sucesso",
           description: "PDF compartilhado com sucesso!",
         });
       } else {
         // Fallback: download the file
+        console.log('Web Share API não disponível, fazendo download...');
         await downloadPDF();
         toast({
           title: "Compartilhamento não disponível",
