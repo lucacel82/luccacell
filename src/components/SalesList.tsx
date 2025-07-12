@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface SalesListProps {
   sales: Sale[];
-  onUpdate: (id: string, sale: Omit<Sale, 'id'>) => void;
+  onUpdate: (id: string, sale: Omit<Sale, 'id' | 'data_venda'>) => void;
   onDelete: (id: string) => void;
 }
 
@@ -42,9 +42,9 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
   const startEdit = (sale: Sale) => {
     setEditingId(sale.id);
     setEditForm({
-      productName: sale.productName,
-      quantity: sale.quantity.toString(),
-      value: sale.value.toString(),
+      productName: sale.nome_produto,
+      quantity: sale.quantidade.toString(),
+      value: sale.valor.toString(),
     });
   };
 
@@ -53,7 +53,7 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
     setEditForm({ productName: '', quantity: '', value: '' });
   };
 
-  const saveEdit = (id: string, originalDate: string) => {
+  const saveEdit = (id: string) => {
     if (!editForm.productName.trim() || !editForm.quantity || !editForm.value) {
       toast({
         title: "Erro",
@@ -76,26 +76,17 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
     }
 
     onUpdate(id, {
-      productName: editForm.productName.trim(),
-      quantity,
-      value,
-      date: originalDate,
+      nome_produto: editForm.productName.trim(),
+      quantidade: quantity,
+      valor: value,
     });
 
     setEditingId(null);
-    toast({
-      title: "Sucesso!",
-      description: "Venda atualizada com sucesso",
-    });
   };
 
   const handleDelete = (id: string) => {
     if (window.confirm('Tem certeza que deseja excluir esta venda?')) {
       onDelete(id);
-      toast({
-        title: "Venda excluída",
-        description: "A venda foi removida com sucesso",
-      });
     }
   };
 
@@ -159,7 +150,7 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
                   <div className="flex gap-2">
                     <Button
                       size="sm"
-                      onClick={() => saveEdit(sale.id, sale.date)}
+                      onClick={() => saveEdit(sale.id)}
                       className="bg-gradient-gold text-primary-foreground hover:opacity-90 flex-1"
                     >
                       <Save className="h-4 w-4 mr-2" />
@@ -180,17 +171,17 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
                 <div className="space-y-3">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h3 className="font-medium text-foreground">{sale.productName}</h3>
+                      <h3 className="font-medium text-foreground">{sale.nome_produto}</h3>
                       <p className="text-sm text-muted-foreground">
-                        {formatDate(sale.date)}
+                        {formatDate(sale.data_venda)}
                       </p>
                     </div>
                     <div className="text-right">
                       <div className="text-xl font-bold text-primary">
-                        {formatCurrency(sale.value)}
+                        {formatCurrency(sale.valor)}
                       </div>
                       <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
-                        Qtd: {sale.quantity}
+                        Qtd: {sale.quantidade}
                       </Badge>
                     </div>
                   </div>

@@ -1,13 +1,17 @@
 export interface Sale {
   id: string;
-  productName: string;
-  quantity: number;
-  value: number;
-  date: string;
+  nome_produto: string;
+  quantidade: number;
+  valor: number;
+  data_venda: string;
 }
 
 export interface WeeklyReport {
   totalSales: number;
   totalValue: number;
   sales: Sale[];
+}
+
+export interface DailyReport {
+  totalValue: number;
 }

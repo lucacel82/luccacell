@@ -8,10 +8,9 @@ import { useToast } from '@/hooks/use-toast';
 
 interface SaleFormProps {
   onSubmit: (sale: {
-    productName: string;
-    quantity: number;
-    value: number;
-    date: string;
+    nome_produto: string;
+    quantidade: number;
+    valor: number;
   }) => void;
 }
 
@@ -46,10 +45,9 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
     }
 
     onSubmit({
-      productName: productName.trim(),
-      quantity: quantityNum,
-      value: valueNum,
-      date: new Date().toISOString(),
+      nome_produto: productName.trim(),
+      quantidade: quantityNum,
+      valor: valueNum,
     });
 
     // Reset form

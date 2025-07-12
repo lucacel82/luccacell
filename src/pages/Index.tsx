@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart3, ShoppingBag } from 'lucide-react';
 import { SaleForm } from '@/components/SaleForm';
 import { SalesList } from '@/components/SalesList';
 import { WeeklyReport } from '@/components/WeeklyReport';
+import { DailyReport } from '@/components/DailyReport';
 import { useSales } from '@/hooks/useSales';
 
 const Index = () => {
-  const { sales, addSale, updateSale, deleteSale, getWeeklyReport } = useSales();
+  const { sales, loading, addSale, updateSale, deleteSale, getDailyReport, getWeeklyReport } = useSales();
   const [activeTab, setActiveTab] = useState('sales');
 
+  const dailyReport = getDailyReport();
   const weeklyReport = getWeeklyReport();
 
   return (
@@ -40,6 +41,9 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
+        {/* Daily Report - Fixed at top */}
+        <DailyReport report={dailyReport} />
+        
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-secondary border border-border">
             <TabsTrigger 
@@ -60,11 +64,17 @@ const Index = () => {
 
           <TabsContent value="sales" className="space-y-6 mt-6">
             <SaleForm onSubmit={addSale} />
-            <SalesList 
-              sales={sales} 
-              onUpdate={updateSale} 
-              onDelete={deleteSale} 
-            />
+            {loading ? (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">Carregando vendas...</p>
+              </div>
+            ) : (
+              <SalesList 
+                sales={sales} 
+                onUpdate={updateSale} 
+                onDelete={deleteSale} 
+              />
+            )}
           </TabsContent>
 
           <TabsContent value="report" className="mt-6">

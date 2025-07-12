@@ -94,17 +94,17 @@ export const WeeklyReport = ({ report }: WeeklyReportProps) => {
                   className="flex justify-between items-center bg-secondary/30 border border-border rounded-lg p-3 transition-colors"
                 >
                   <div className="flex-1">
-                    <h4 className="font-medium text-foreground">{sale.productName}</h4>
+                    <h4 className="font-medium text-foreground">{sale.nome_produto}</h4>
                     <p className="text-sm text-muted-foreground">
-                      {formatDate(sale.date)}
+                      {formatDate(sale.data_venda)}
                     </p>
                   </div>
                   <div className="text-right">
                     <div className="font-bold text-primary">
-                      {formatCurrency(sale.value)}
+                      {formatCurrency(sale.valor)}
                     </div>
                     <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
-                      Qtd: {sale.quantity}
+                      Qtd: {sale.quantidade}
                     </Badge>
                   </div>
                 </div>
