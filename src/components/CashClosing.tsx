@@ -4,14 +4,7 @@ import { FileText, Download, Share } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Sale } from '@/types/sale';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-
-// Extend jsPDF to include autoTable
-declare module 'jspdf' {
-  interface jsPDF {
-    autoTable: (options: any) => jsPDF;
-  }
-}
+import autoTable from 'jspdf-autotable';
 
 interface CashClosingProps {
   dailySales: Sale[];
@@ -63,8 +56,8 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
           formatCurrency(sale.valor)
         ]);
 
-        // Add table
-        doc.autoTable({
+        // Add table using autoTable
+        autoTable(doc, {
           head: [['Produto', 'Quantidade', 'Valor']],
           body: tableData,
           startY: 55,
