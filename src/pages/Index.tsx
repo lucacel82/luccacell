@@ -60,7 +60,7 @@ const Index = () => {
               className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
             >
               <BarChart3 className="h-4 w-4" />
-              Relatório <span className="hidden sm:inline">Semanal</span>
+              Relatório<span className="hidden sm:inline">s</span>
             </TabsTrigger>
             <TabsTrigger 
               value="closing" 
