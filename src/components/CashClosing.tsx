@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { GlassButton } from '@/components/ui/glass-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileText, Download, Share } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -184,40 +184,44 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
   };
 
   return (
-    <Card className="bg-card border-border shadow-dark">
+    <Card className="glass-card shadow-dark">
       <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2">
+        <CardTitle className="text-primary flex items-center gap-2 font-poppins">
           <FileText className="h-5 w-5" />
           Fechamento de Caixa
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="text-center p-4 bg-gradient-gold rounded-lg">
-            <p className="text-primary-foreground font-medium">
+          <div className="text-center p-4 bg-gradient-gold rounded-xl">
+            <p className="text-primary-foreground font-medium font-poppins">
               {dailySales.length} vendas registradas hoje
             </p>
-            <p className="text-primary-foreground text-2xl font-bold">
+            <p className="text-primary-foreground text-2xl font-bold font-poppins">
               {formatCurrency(dailyTotal)}
             </p>
           </div>
           
           <div className="flex gap-2">
-            <Button 
+            <GlassButton 
               onClick={downloadPDF}
-              className="flex-1 bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              variant="glass"
+              size="lg"
+              className="flex-1 font-poppins"
             >
               <Download className="h-4 w-4 mr-2" />
               Baixar PDF
-            </Button>
+            </GlassButton>
             
-            <Button 
+            <GlassButton 
               onClick={sharePDF}
-              className="flex-1 bg-gradient-gold text-primary-foreground hover:opacity-90"
+              variant="gold"
+              size="lg"
+              className="flex-1 font-poppins"
             >
               <Share className="h-4 w-4 mr-2" />
               Compartilhar
-            </Button>
+            </GlassButton>
           </div>
         </div>
       </CardContent>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { GlassButton } from '@/components/ui/glass-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +16,7 @@ interface SaleFormProps {
 
 export const SaleForm = ({ onSubmit }: SaleFormProps) => {
   const [productName, setProductName] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState('1');
   const [value, setValue] = useState('');
   const { toast } = useToast();
 
@@ -52,7 +52,7 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
 
     // Reset form
     setProductName('');
-    setQuantity('');
+    setQuantity('1');
     setValue('');
 
     toast({
@@ -62,9 +62,9 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
   };
 
   return (
-    <Card className="bg-card border-border shadow-dark">
+    <Card className="glass-card shadow-dark">
       <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2">
+        <CardTitle className="text-primary flex items-center gap-2 font-poppins">
           <Plus className="h-5 w-5" />
           Registrar Nova Venda
         </CardTitle>
@@ -81,7 +81,7 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               placeholder="Ex: iPhone 15, Capinha Samsung..."
-              className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+              className="bg-input/80 border-border/50 text-foreground placeholder:text-muted-foreground rounded-xl backdrop-blur-sm"
             />
           </div>
 
@@ -97,7 +97,7 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 placeholder="1"
-                className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+                className="bg-input/80 border-border/50 text-foreground placeholder:text-muted-foreground rounded-xl backdrop-blur-sm"
               />
             </div>
 
@@ -113,18 +113,20 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="0,00"
-                className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+                className="bg-input/80 border-border/50 text-foreground placeholder:text-muted-foreground rounded-xl backdrop-blur-sm"
               />
             </div>
           </div>
 
-          <Button 
+          <GlassButton 
             type="submit" 
-            className="w-full bg-gradient-gold text-primary-foreground hover:opacity-90 transition-opacity font-medium"
+            variant="gold"
+            size="lg"
+            className="w-full font-poppins"
           >
             <Plus className="h-4 w-4 mr-2" />
             Registrar Venda
-          </Button>
+          </GlassButton>
         </form>
       </CardContent>
     </Card>

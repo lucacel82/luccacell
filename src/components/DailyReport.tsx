@@ -23,20 +23,20 @@ export const DailyReport = ({ report }: DailyReportProps) => {
   };
 
   return (
-    <Card className="bg-gradient-gold border-border shadow-gold mb-6 text-primary-foreground">
+    <Card className="bg-gradient-gold border-border shadow-gold mb-6 text-primary-foreground rounded-2xl">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-primary-foreground/20 rounded-full p-3">
+            <div className="bg-primary-foreground/20 rounded-xl p-3">
               <DollarSign className="h-6 w-6" />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Total de Vendas Hoje</h2>
-              <p className="text-sm opacity-90">{getCurrentDate()}</p>
+              <h2 className="text-xl font-bold font-poppins">Total de Vendas</h2>
+              <p className="text-sm opacity-90 font-poppins">{getCurrentDate()}</p>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold">
+            <div className="text-3xl font-bold font-poppins">
               {formatCurrency(report.totalValue)}
             </div>
           </div>

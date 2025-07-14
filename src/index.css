@@ -106,5 +106,20 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 600;
+  }
+
+  /* Glassmorphism effects */
+  .glass {
+    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  }
+  
+  .glass-dark {
+    @apply backdrop-blur-md bg-black/20 border border-white/10;
+  }
+  
+  .glass-card {
+    @apply backdrop-blur-lg bg-card/80 border border-border/50 rounded-xl;
   }
 }

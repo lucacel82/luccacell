@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { GlassButton } from '@/components/ui/glass-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Edit2, Trash2, List, Save, X } from 'lucide-react';
@@ -92,10 +92,10 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
 
   if (sales.length === 0) {
     return (
-      <Card className="bg-card border-border shadow-dark">
+      <Card className="glass-card shadow-dark">
         <CardContent className="flex flex-col items-center justify-center py-8">
           <List className="h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-muted-foreground text-center">
+          <p className="text-muted-foreground text-center font-poppins">
             Nenhuma venda registrada hoje.
             <br />
             Registre sua primeira venda usando o formulário acima.
@@ -106,9 +106,9 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
   }
 
   return (
-    <Card className="bg-card border-border shadow-dark">
+    <Card className="glass-card shadow-dark">
       <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2">
+        <CardTitle className="text-primary flex items-center gap-2 font-poppins">
           <List className="h-5 w-5" />
           Vendas Registradas ({sales.length})
         </CardTitle>
@@ -118,7 +118,7 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
           {sales.map((sale) => (
             <div
               key={sale.id}
-              className="bg-secondary/50 border border-border rounded-lg p-4 transition-colors"
+              className="bg-secondary/50 border border-border/50 rounded-xl p-4 transition-colors backdrop-blur-sm"
             >
               {editingId === sale.id ? (
                 <div className="space-y-3">
@@ -148,63 +148,64 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
                     />
                   </div>
                   <div className="flex gap-2">
-                    <Button
+                    <GlassButton
                       size="sm"
+                      variant="gold"
                       onClick={() => saveEdit(sale.id)}
-                      className="bg-gradient-gold text-primary-foreground hover:opacity-90 flex-1"
+                      className="flex-1 font-poppins"
                     >
                       <Save className="h-4 w-4 mr-2" />
                       Salvar
-                    </Button>
-                    <Button
+                    </GlassButton>
+                    <GlassButton
                       size="sm"
                       variant="outline"
                       onClick={cancelEdit}
-                      className="border-border text-foreground hover:bg-muted flex-1"
+                      className="flex-1 font-poppins"
                     >
                       <X className="h-4 w-4 mr-2" />
                       Cancelar
-                    </Button>
+                    </GlassButton>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-3">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h3 className="font-medium text-foreground">{sale.nome_produto}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <h3 className="font-medium text-foreground font-poppins">{sale.nome_produto}</h3>
+                      <p className="text-sm text-muted-foreground font-poppins">
                         {formatDate(sale.data_venda)}
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="text-xl font-bold text-primary">
+                      <div className="text-xl font-bold text-primary font-poppins">
                         {formatCurrency(sale.valor)}
                       </div>
-                      <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
+                      <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground font-poppins">
                         Qtd: {sale.quantidade}
                       </Badge>
                     </div>
                   </div>
                   
                   <div className="flex gap-2 pt-2">
-                    <Button
+                    <GlassButton
                       size="sm"
-                      variant="outline"
+                      variant="glass"
                       onClick={() => startEdit(sale)}
-                      className="border-border text-foreground hover:bg-muted flex-1"
+                      className="flex-1 font-poppins"
                     >
                       <Edit2 className="h-4 w-4 mr-2" />
                       Editar
-                    </Button>
-                    <Button
+                    </GlassButton>
+                    <GlassButton
                       size="sm"
                       variant="destructive"
                       onClick={() => handleDelete(sale.id)}
-                      className="flex-1"
+                      className="flex-1 font-poppins"
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Excluir
-                    </Button>
+                    </GlassButton>
                   </div>
                 </div>
               )}

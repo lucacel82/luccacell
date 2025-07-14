@@ -26,14 +26,14 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/6bfd736e-2813-4131-a5a5-76c6df038df8.png" 
                 alt="Lucca Cell Logo" 
-                className="h-16 w-auto object-contain"
+                className="h-16 w-auto object-contain rounded-xl"
               />
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl md:text-2xl font-bold text-primary truncate">
+              <h1 className="text-xl md:text-2xl font-bold text-primary truncate font-poppins">
                 Sistema de Controle de Vendas
               </h1>
-              <p className="text-sm md:text-base text-muted-foreground">
+              <p className="text-sm md:text-base text-muted-foreground font-poppins">
                 Assistência Técnica & Acessórios
               </p>
             </div>
@@ -47,24 +47,24 @@ const Index = () => {
         <DailyReport report={dailyReport} />
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-secondary border border-border">
+          <TabsList className="grid w-full grid-cols-3 bg-secondary/50 border border-border/50 rounded-xl backdrop-blur-sm">
             <TabsTrigger 
               value="sales" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground rounded-lg font-poppins"
             >
               <ShoppingBag className="h-4 w-4" />
               <span className="hidden sm:inline">Registrar</span> Vendas
             </TabsTrigger>
             <TabsTrigger 
               value="report" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground rounded-lg font-poppins"
             >
               <BarChart3 className="h-4 w-4" />
               Relatório<span className="hidden sm:inline">s</span>
             </TabsTrigger>
             <TabsTrigger 
               value="closing" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground rounded-lg font-poppins"
             >
               <FileText className="h-4 w-4" />
               Fechar <span className="hidden sm:inline">Caixa</span>
