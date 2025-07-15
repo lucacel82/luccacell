@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, TrendingUp, DollarSign, Package, CalendarDays } from 'lucide-react';
+import { BarChart3, TrendingUp, DollarSign, Package, CalendarDays, Calendar } from 'lucide-react';
 import { WeeklyReport as WeeklyReportType } from '@/types/sale';
 import { DailyReportCalendar } from './DailyReportCalendar';
+import { PeriodReport } from './PeriodReport';
 
 interface WeeklyReportProps {
   report: WeeklyReportType;
@@ -44,25 +45,36 @@ export const WeeklyReport = ({ report }: WeeklyReportProps) => {
 
   return (
     <Tabs defaultValue="calendar" className="w-full">
-      <TabsList className="grid w-full grid-cols-2 bg-secondary border border-border">
+      <TabsList className="grid w-full grid-cols-3 bg-secondary border border-border">
         <TabsTrigger 
           value="calendar" 
           className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
         >
           <CalendarDays className="h-4 w-4" />
-          Consulta por Data
+          <span className="hidden sm:inline">Consulta por</span> Data
+        </TabsTrigger>
+        <TabsTrigger 
+          value="period" 
+          className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+        >
+          <Calendar className="h-4 w-4" />
+          <span className="hidden sm:inline">Por</span> Período
         </TabsTrigger>
         <TabsTrigger 
           value="weekly" 
           className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
         >
           <BarChart3 className="h-4 w-4" />
-          Relatório Semanal
+          <span className="hidden sm:inline">Relatório</span> Semanal
         </TabsTrigger>
       </TabsList>
 
       <TabsContent value="calendar" className="mt-6">
         <DailyReportCalendar />
+      </TabsContent>
+
+      <TabsContent value="period" className="mt-6">
+        <PeriodReport />
       </TabsContent>
 
       <TabsContent value="weekly" className="mt-6">
