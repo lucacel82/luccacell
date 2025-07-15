@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GlassButton } from '@/components/ui/glass-button';
+import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -118,7 +118,7 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
             </div>
           </div>
 
-          <GlassButton 
+          <LiquidButton 
             type="submit" 
             variant="gold"
             size="lg"
@@ -126,7 +126,7 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
           >
             <Plus className="h-4 w-4 mr-2" />
             Registrar Venda
-          </GlassButton>
+          </LiquidButton>
         </form>
       </CardContent>
     </Card>
