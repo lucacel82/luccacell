@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar as CalendarIcon, Search, TrendingUp, Package, DollarSign } from 'lucide-react';
+import { Calendar as CalendarIcon, Search, TrendingUp, Package, DollarSign, Printer } from 'lucide-react';
 import { format, startOfWeek, endOfWeek } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { DateRange } from 'react-day-picker';
@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { GlassEffect } from '@/components/ui/glass-effect';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
+import { Button } from '@/components/ui/button';
 import { usePeriodSales } from '@/hooks/usePeriodSales';
 
 export const PeriodReport = () => {
@@ -44,6 +45,84 @@ export const PeriodReport = () => {
     }
   };
 
+  const handlePrint = () => {
+    if (periodReport.sales.length === 0) return;
+
+    const printContent = `
+      <html>
+        <head>
+          <title>Relatório do Período - Lucca Cell</title>
+          <style>
+            body { font-family: 'Poppins', Arial, sans-serif; margin: 20px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .logo { color: #FFD700; font-size: 24px; font-weight: 600; }
+            .period { color: #666; margin: 10px 0; }
+            .summary { display: flex; justify-content: space-around; margin: 20px 0; }
+            .summary-item { text-align: center; padding: 10px; }
+            .summary-value { font-size: 18px; font-weight: bold; color: #FFD700; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+            th { background-color: #f9f9f9; color: #FFD700; font-weight: 600; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            .total-row { background-color: #FFD700; color: white; font-weight: bold; }
+            .total-value { font-size: 18px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo">LUCCA CELL</div>
+            <div class="period">Relatório do Período: ${periodReport.startDate ? format(periodReport.startDate, "dd/MM/yyyy", { locale: ptBR }) : ''} até ${periodReport.endDate ? format(periodReport.endDate, "dd/MM/yyyy", { locale: ptBR }) : ''}</div>
+          </div>
+          
+          <div class="summary">
+            <div class="summary-item">
+              <div>Total de Vendas</div>
+              <div class="summary-value">${periodReport.totalSales}</div>
+            </div>
+            <div class="summary-item">
+              <div>Valor Total</div>
+              <div class="summary-value">${formatCurrency(periodReport.totalValue)}</div>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Data</th>
+                <th>Quantidade</th>
+                <th>Valor Unitário</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${periodReport.sales.map(sale => `
+                <tr>
+                  <td>${sale.nome_produto}</td>
+                  <td>${formatDate(sale.data_venda)}</td>
+                  <td>${sale.quantidade}</td>
+                  <td>${formatCurrency(sale.valor)}</td>
+                  <td>${formatCurrency(sale.quantidade * sale.valor)}</td>
+                </tr>
+              `).join('')}
+              <tr class="total-row">
+                <td colspan="4"><strong>TOTAL GERAL</strong></td>
+                <td class="total-value">${formatCurrency(periodReport.totalValue)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
   const hasSearched = periodReport.startDate !== null;
 
   return (
@@ -62,7 +141,7 @@ export const PeriodReport = () => {
               </label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <LiquidButton
+                  <Button
                     variant="outline"
                     className={cn(
                       "w-full justify-start text-left font-normal bg-transparent border border-primary/30 hover:border-primary/50",
@@ -82,7 +161,7 @@ export const PeriodReport = () => {
                     ) : (
                       <span>Escolha as datas</span>
                     )}
-                  </LiquidButton>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
@@ -98,10 +177,10 @@ export const PeriodReport = () => {
               </Popover>
             </div>
             
-            <LiquidButton
+            <Button
               onClick={handleFilter}
               disabled={!date?.from || !date?.to || loading}
-              variant="gold"
+              className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 border border-primary/50"
               size="lg"
             >
               {loading ? (
@@ -115,7 +194,7 @@ export const PeriodReport = () => {
                   Filtrar
                 </>
               )}
-            </LiquidButton>
+            </Button>
           </div>
         </div>
       </GlassEffect>
@@ -149,11 +228,20 @@ export const PeriodReport = () => {
               </div>
             </div>
             
-            <div className="mt-4 text-center">
+            <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
               <p className="text-sm text-muted-foreground">
                 Período: {periodReport.startDate && format(periodReport.startDate, "dd/MM/yyyy", { locale: ptBR })} até{" "}
                 {periodReport.endDate && format(periodReport.endDate, "dd/MM/yyyy", { locale: ptBR })}
               </p>
+              <Button
+                onClick={handlePrint}
+                disabled={periodReport.sales.length === 0}
+                variant="outline"
+                className="border-primary/50 text-primary hover:bg-primary/10"
+              >
+                <Printer className="h-4 w-4 mr-2" />
+                Imprimir Relatório
+              </Button>
             </div>
           </GlassEffect>
 
