@@ -108,8 +108,8 @@ export const DailyReportCalendar = () => {
               ...selectedDateSales.map((sale, index) => [
                 { text: sale.nome_produto, style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd' },
                 { text: sale.quantidade.toString(), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'center' },
-                { text: formatCurrency(sale.valor), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'right' },
-                { text: formatCurrency(sale.quantidade ? sale.valor / sale.quantidade : sale.valor), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'right' }
+                { text: formatCurrency(sale.valor * sale.quantidade), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'right' },
+                { text: formatCurrency(sale.valor), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'right' }
               ])
             ]
           },
@@ -254,10 +254,10 @@ export const DailyReportCalendar = () => {
                     </div>
                     <div className="text-right">
                       <div className="font-bold text-primary">
-                        {formatCurrency(sale.valor)}
+                        {formatCurrency(sale.valor * sale.quantidade)}
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {sale.quantidade}x {formatCurrency(sale.quantidade ? sale.valor / sale.quantidade : sale.valor)}
+                        {sale.quantidade}x {formatCurrency(sale.valor)}
                       </div>
                     </div>
                   </div>

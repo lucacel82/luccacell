@@ -76,7 +76,7 @@ export const useSales = () => {
       if (error) throw error;
 
       const salesData = weekSales || [];
-      const totalValue = salesData.reduce((sum, sale) => sum + sale.valor, 0);
+      const totalValue = salesData.reduce((sum, sale) => sum + (sale.quantidade * sale.valor), 0);
 
       setWeeklyReport({
         totalSales: salesData.length,
@@ -177,7 +177,7 @@ export const useSales = () => {
 
   const getDailyReport = (): DailyReport => {
     // Since sales state now contains only today's sales, we can calculate directly
-    const totalValue = sales.reduce((sum, sale) => sum + sale.valor, 0);
+    const totalValue = sales.reduce((sum, sale) => sum + (sale.quantidade * sale.valor), 0);
 
     return {
       totalValue,
