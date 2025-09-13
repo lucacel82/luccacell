@@ -101,15 +101,15 @@ export const DailyReportCalendar = () => {
               [
                 { text: 'Produto', style: 'tableHeader' },
                 { text: 'Quantidade', style: 'tableHeader', alignment: 'center' },
-                { text: 'Valor Unitário', style: 'tableHeader', alignment: 'right' },
-                { text: 'Total', style: 'tableHeader', alignment: 'right' }
+                { text: 'Valor Total', style: 'tableHeader', alignment: 'right' },
+                { text: 'Valor Unitário', style: 'tableHeader', alignment: 'right' }
               ],
               // Data rows
               ...selectedDateSales.map((sale, index) => [
                 { text: sale.nome_produto, style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd' },
                 { text: sale.quantidade.toString(), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'center' },
                 { text: formatCurrency(sale.valor), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'right' },
-                { text: formatCurrency(sale.valor * sale.quantidade), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'right' }
+                { text: formatCurrency(sale.quantidade ? sale.valor / sale.quantidade : sale.valor), style: index % 2 === 0 ? 'tableRowEven' : 'tableRowOdd', alignment: 'right' }
               ])
             ]
           },
@@ -254,10 +254,10 @@ export const DailyReportCalendar = () => {
                     </div>
                     <div className="text-right">
                       <div className="font-bold text-primary">
-                        {formatCurrency(sale.valor * sale.quantidade)}
+                        {formatCurrency(sale.valor)}
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {sale.quantidade}x {formatCurrency(sale.valor)}
+                        {sale.quantidade}x {formatCurrency(sale.quantidade ? sale.valor / sale.quantidade : sale.valor)}
                       </div>
                     </div>
                   </div>

@@ -48,7 +48,7 @@ export const useSalesByDate = () => {
   };
 
   const getSelectedDateReport = (): DailyReport => {
-    const totalValue = selectedDateSales.reduce((sum, sale) => sum + (sale.quantidade * sale.valor), 0);
+    const totalValue = selectedDateSales.reduce((sum, sale) => sum + sale.valor, 0);
     return { totalValue };
   };
 
