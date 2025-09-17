@@ -201,7 +201,7 @@ export const DailyReportCalendar = () => {
             mode="single"
             selected={selectedDate}
             onSelect={(date) => date && loadSalesByDate(date)}
-            className="rounded-md border border-border"
+            className="rounded-md border border-border p-3 pointer-events-auto"
           />
         </CardContent>
       </Card>
