@@ -1,6 +1,6 @@
 import { GlassButton } from '@/components/ui/glass-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Download, Share } from 'lucide-react';
+import { FileText, Download, Share, TrendingUp, Calculator, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Sale } from '@/types/sale';
 import jsPDF from 'jspdf';
@@ -184,47 +184,109 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
   };
 
   return (
-    <Card className="glass-card shadow-dark">
-      <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2 font-poppins">
-          <FileText className="h-5 w-5" />
-          Fechamento de Caixa
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="text-center p-4 bg-gradient-gold rounded-xl">
-            <p className="text-primary-foreground font-medium font-poppins">
-              {dailySales.length} vendas registradas hoje
-            </p>
-            <p className="text-primary-foreground text-2xl font-bold font-poppins">
-              {formatCurrency(dailyTotal)}
-            </p>
-          </div>
-          
-          <div className="flex gap-2">
-            <GlassButton 
-              onClick={downloadPDF}
-              variant="glass"
-              size="lg"
-              className="flex-1 font-poppins"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Baixar PDF
-            </GlassButton>
+    <div className="animate-fade-in space-y-6">
+      {/* Summary Card */}
+      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-gold/20 transition-all duration-500 animate-scale-in">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16 blur-2xl" />
+        
+        <CardHeader className="relative z-10">
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-gradient-gold p-3 rounded-2xl shadow-gold animate-pulse-glow">
+                <Calculator className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary font-poppins text-xl">Fechamento de Caixa</span>
+                  <Sparkles className="h-4 w-4 text-accent animate-pulse" />
+                </div>
+                <p className="text-sm text-muted-foreground font-poppins">
+                  Relatório do dia {getCurrentDate()}
+                </p>
+              </div>
+            </div>
+            <TrendingUp className="h-6 w-6 text-primary animate-bounce" />
+          </CardTitle>
+        </CardHeader>
+        
+        <CardContent className="relative z-10 space-y-6">
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up">
+            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-6 border border-primary/20 hover:border-primary/40 transition-all duration-300 group">
+              <div className="flex items-center gap-4">
+                <div className="bg-primary/20 p-3 rounded-full group-hover:bg-primary/30 transition-colors">
+                  <FileText className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Vendas Realizadas</p>
+                  <p className="text-2xl font-bold text-primary font-poppins group-hover:scale-105 transition-transform">
+                    {dailySales.length}
+                  </p>
+                </div>
+              </div>
+            </div>
             
-            <GlassButton 
-              onClick={sharePDF}
-              variant="gold"
-              size="lg"
-              className="flex-1 font-poppins"
-            >
-              <Share className="h-4 w-4 mr-2" />
-              Compartilhar
-            </GlassButton>
+            <div className="bg-gradient-gold rounded-2xl p-6 shadow-gold animate-pulse-glow group hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center gap-4">
+                <div className="bg-primary-foreground/20 p-3 rounded-full">
+                  <TrendingUp className="h-6 w-6 text-primary-foreground animate-float" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-primary-foreground/80">Total Arrecadado</p>
+                  <p className="text-3xl font-bold text-primary-foreground font-poppins">
+                    {formatCurrency(dailyTotal)}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+
+          {/* Actions */}
+          <div className="space-y-3 animate-fade-in">
+            <div className="flex gap-3">
+              <GlassButton 
+                onClick={downloadPDF}
+                variant="glass"
+                size="lg"
+                className="flex-1 font-poppins group hover:scale-105 transition-all duration-300"
+              >
+                <Download className="h-4 w-4 mr-2 group-hover:animate-bounce" />
+                Baixar PDF
+              </GlassButton>
+              
+              <GlassButton 
+                onClick={sharePDF}
+                variant="gold"
+                size="lg"
+                className="flex-1 font-poppins group hover:scale-105 transition-all duration-300"
+              >
+                <Share className="h-4 w-4 mr-2 group-hover:animate-pulse" />
+                Compartilhar
+              </GlassButton>
+            </div>
+            
+            {dailySales.length === 0 && (
+              <div className="text-center p-6 bg-muted/20 rounded-2xl border-2 border-dashed border-muted-foreground/30 animate-pulse">
+                <p className="text-muted-foreground font-poppins">
+                  📊 Nenhuma venda registrada hoje
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Quando houver vendas, elas aparecerão aqui!
+                </p>
+              </div>
+            )}
+            
+            {dailySales.length > 0 && (
+              <div className="text-center p-4 bg-primary/5 rounded-2xl border border-primary/20 animate-fade-in">
+                <p className="text-primary font-medium font-poppins flex items-center justify-center gap-2">
+                  🎉 <span>Parabéns! {dailySales.length} vendas realizadas hoje</span>
+                </p>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

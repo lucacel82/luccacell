@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CalendarDays, DollarSign, Package, FileDown } from 'lucide-react';
+import { CalendarDays, DollarSign, Package, FileDown, Sparkles } from 'lucide-react';
 import { useSalesByDate } from '@/hooks/useSalesByDate';
 import pdfMake from 'pdfmake/build/pdfmake';
 // @ts-ignore
@@ -187,76 +187,105 @@ export const DailyReportCalendar = () => {
   const selectedDateReport = getSelectedDateReport();
 
   return (
-    <div className="space-y-6">
-      {/* Calendar */}
-      <Card className="bg-card border-border shadow-dark">
-        <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2">
-            <CalendarDays className="h-5 w-5" />
-            Consultar Vendas por Data
+    <div className="space-y-8 animate-fade-in">
+      {/* Calendar Card */}
+      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-gold/20 transition-all duration-500 animate-scale-in">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16 blur-2xl" />
+        
+        <CardHeader className="relative z-10">
+          <CardTitle className="flex items-center gap-3">
+            <div className="bg-gradient-gold p-3 rounded-2xl shadow-gold animate-pulse-glow">
+              <CalendarDays className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-primary font-poppins text-xl">Consultar Vendas por Data</span>
+              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex justify-center">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={(date) => date && loadSalesByDate(date)}
-            className="rounded-md border border-border p-3 pointer-events-auto"
-          />
+        
+        <CardContent className="relative z-10 flex justify-center pb-8">
+          <div className="bg-gradient-to-br from-background/80 to-background/60 rounded-3xl p-6 border-2 border-primary/20 shadow-inner">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={(date) => date && loadSalesByDate(date)}
+              className="rounded-2xl border border-border/50 p-4 pointer-events-auto hover:border-primary/30 transition-all duration-300"
+            />
+          </div>
         </CardContent>
       </Card>
 
       {/* Selected Date Report */}
-      <Card className="bg-card border-border shadow-dark">
-        <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2">
-            <Package className="h-5 w-5" />
-            Vendas do dia {formatDate(selectedDate)}
+      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl animate-slide-up">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/20 rounded-full translate-y-12 -translate-x-12 blur-2xl" />
+        
+        <CardHeader className="relative z-10">
+          <CardTitle className="flex items-center gap-3">
+            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-gold">
+              <Package className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <span className="text-primary font-poppins text-xl">
+              Vendas do dia {formatDate(selectedDate)}
+            </span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        
+        <CardContent className="relative z-10">
           {loading ? (
-            <div className="text-center py-8">
-              <p className="text-muted-foreground">Carregando vendas...</p>
+            <div className="text-center py-12 animate-pulse">
+              <div className="bg-primary/20 rounded-full p-6 w-fit mx-auto mb-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+              <p className="text-muted-foreground font-poppins">Carregando vendas...</p>
             </div>
           ) : selectedDateSales.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-6 animate-fade-in">
               {/* Summary */}
-              <div className="bg-gradient-gold rounded-lg p-4 text-primary-foreground">
+              <div className="bg-gradient-gold rounded-2xl p-6 shadow-gold animate-pulse-glow">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-primary-foreground/20 rounded-full p-3">
-                      <DollarSign className="h-6 w-6" />
+                  <div className="flex items-center gap-4">
+                    <div className="bg-primary-foreground/20 rounded-2xl p-4">
+                      <DollarSign className="h-8 w-8 text-primary-foreground animate-bounce" />
                     </div>
                     <div>
-                      <p className="text-sm opacity-90">Total do Dia</p>
-                      <p className="text-2xl font-bold">{formatCurrency(selectedDateReport.totalValue)}</p>
+                      <p className="text-sm text-primary-foreground/80 font-medium mb-1">Total do Dia</p>
+                      <p className="text-3xl font-bold text-primary-foreground font-poppins">
+                        {formatCurrency(selectedDateReport.totalValue)}
+                      </p>
                     </div>
                   </div>
-                  <Badge variant="secondary" className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30">
-                    {selectedDateSales.length} {selectedDateSales.length === 1 ? 'venda' : 'vendas'}
-                  </Badge>
+                  <div className="text-right">
+                    <Badge variant="secondary" className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30 animate-pulse">
+                      {selectedDateSales.length} {selectedDateSales.length === 1 ? 'venda' : 'vendas'}
+                    </Badge>
+                  </div>
                 </div>
               </div>
 
               {/* Sales List */}
               <div className="space-y-3">
-                {selectedDateSales.map((sale) => (
+                {selectedDateSales.map((sale, index) => (
                   <div
                     key={sale.id}
-                    className="flex justify-between items-center bg-secondary/30 border border-border rounded-lg p-3"
+                    className="flex justify-between items-center bg-gradient-to-r from-secondary/20 to-secondary/10 border border-border/50 rounded-2xl p-4 transition-all duration-300 hover:bg-secondary/30 hover:border-primary/30 hover:scale-[1.02] group animate-slide-up"
+                    style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="flex-1">
-                      <h4 className="font-medium text-foreground">{sale.nome_produto}</h4>
+                      <h4 className="font-medium text-foreground font-poppins group-hover:text-primary transition-colors">
+                        {sale.nome_produto}
+                      </h4>
                       <p className="text-sm text-muted-foreground">
                         {formatDateTime(sale.data_venda)}
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-primary">
+                      <div className="font-bold text-primary text-lg font-poppins group-hover:scale-105 transition-transform">
                         {formatCurrency(sale.valor * sale.quantidade)}
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-sm text-muted-foreground mt-1">
                         {sale.quantidade}x {formatCurrency(sale.valor)}
                       </div>
                     </div>
@@ -265,22 +294,30 @@ export const DailyReportCalendar = () => {
               </div>
 
               {/* PDF Button */}
-              <div className="flex justify-center pt-4">
+              <div className="flex justify-center pt-6 animate-fade-in">
                 <Button 
                   onClick={generatePDF}
-                  className="bg-gradient-gold text-primary-foreground hover:opacity-90 flex items-center gap-2"
+                  className="bg-gradient-gold text-primary-foreground hover:opacity-90 flex items-center gap-2 shadow-gold group hover:scale-105 transition-all duration-300 px-8 py-3"
+                  size="lg"
                 >
-                  <FileDown className="h-4 w-4" />
-                  Fechar Caixa (PDF)
+                  <FileDown className="h-5 w-5 group-hover:animate-bounce" />
+                  <span className="font-poppins font-medium">Fechar Caixa (PDF)</span>
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="text-center py-8">
-              <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">
-                Nenhuma venda registrada nesse dia.
-              </p>
+            <div className="text-center py-12 animate-fade-in">
+              <div className="bg-muted/20 rounded-full p-6 w-fit mx-auto mb-6 animate-pulse">
+                <Package className="h-16 w-16 text-muted-foreground" />
+              </div>
+              <div className="space-y-2">
+                <p className="text-muted-foreground font-poppins font-medium">
+                  📅 Nenhuma venda registrada nesse dia
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Quando houver vendas nesta data, elas aparecerão aqui!
+                </p>
+              </div>
             </div>
           )}
         </CardContent>
