@@ -19,6 +19,18 @@ export const useSales = () => {
     loadWeeklyReport();
   }, []);
 
+  // Helper function to get recent sales date range (last 30 days)
+  const getRecentDateRange = () => {
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+    
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+    thirtyDaysAgo.setHours(0, 0, 0, 0);
+
+    return { thirtyDaysAgo, today };
+  };
+
   // Helper function to get today's date range for filtering
   const getTodayDateRange = () => {
     const today = new Date();
@@ -32,22 +44,23 @@ export const useSales = () => {
 
   const loadTodaySales = async () => {
     try {
-      const { today, tomorrow } = getTodayDateRange();
+      const { thirtyDaysAgo, today } = getRecentDateRange();
       
       const { data, error } = await supabase
         .from('vendas')
         .select('*')
-        .gte('data_venda', today.toISOString())
-        .lt('data_venda', tomorrow.toISOString())
+        .gte('data_venda', thirtyDaysAgo.toISOString())
+        .lte('data_venda', today.toISOString())
         .order('data_venda', { ascending: false });
 
       if (error) throw error;
+      console.log('Vendas carregadas:', data); // Debug log
       setSales(data || []);
     } catch (error) {
-      console.error('Erro ao carregar vendas do dia:', error);
+      console.error('Erro ao carregar vendas:', error);
       toast({
         title: "Erro",
-        description: "Não foi possível carregar as vendas do dia.",
+        description: "Não foi possível carregar as vendas.",
         variant: "destructive",
       });
     } finally {
@@ -103,6 +116,8 @@ export const useSales = () => {
       if (error) throw error;
       
       setSales(prev => [data, ...prev]);
+      // Reload weekly report when new sale is added
+      loadWeeklyReport();
       toast({
         title: "Sucesso",
         description: "Venda registrada com sucesso!",
@@ -176,8 +191,14 @@ export const useSales = () => {
   };
 
   const getDailyReport = (): DailyReport => {
-    // Since sales state now contains only today's sales, we can calculate directly
-    const totalValue = sales.reduce((sum, sale) => sum + (sale.quantidade * sale.valor), 0);
+    // Filter sales for today only
+    const { today, tomorrow } = getTodayDateRange();
+    const todaySales = sales.filter(sale => {
+      const saleDate = new Date(sale.data_venda);
+      return saleDate >= today && saleDate < tomorrow;
+    });
+    
+    const totalValue = todaySales.reduce((sum, sale) => sum + (sale.quantidade * sale.valor), 0);
 
     return {
       totalValue,
@@ -185,8 +206,12 @@ export const useSales = () => {
   };
 
   const getDailySales = (): Sale[] => {
-    // Since sales state now contains only today's sales, return directly
-    return sales;
+    // Filter sales for today only
+    const { today, tomorrow } = getTodayDateRange();
+    return sales.filter(sale => {
+      const saleDate = new Date(sale.data_venda);
+      return saleDate >= today && saleDate < tomorrow;
+    });
   };
 
   const getWeeklyReport = (): WeeklyReport => {

@@ -96,7 +96,7 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
         <CardContent className="flex flex-col items-center justify-center py-8">
           <List className="h-12 w-12 text-muted-foreground mb-4" />
           <p className="text-muted-foreground text-center font-poppins">
-            Nenhuma venda registrada hoje.
+            Nenhuma venda registrada nos últimos 30 dias.
             <br />
             Registre sua primeira venda usando o formulário acima.
           </p>
@@ -108,10 +108,10 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
   return (
     <Card className="glass-card shadow-dark">
       <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2 font-poppins">
-          <List className="h-5 w-5" />
-          Vendas Registradas ({sales.length})
-        </CardTitle>
+          <CardTitle className="text-primary flex items-center gap-2 font-poppins">
+            <List className="h-5 w-5" />
+            Vendas Recentes ({sales.length})
+          </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
