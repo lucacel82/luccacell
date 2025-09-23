@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sale, WeeklyReport, DailyReport } from '@/types/sale';
+import { Sale, WeeklyReport, DailyReport, SaleInput } from '@/types/sale';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -101,14 +101,20 @@ export const useSales = () => {
     }
   };
 
-  const addSale = async (sale: Omit<Sale, 'id' | 'data_venda'>) => {
+  const addSale = async (sale: SaleInput) => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+
       const { data, error } = await supabase
         .from('vendas')
         .insert([{
           nome_produto: sale.nome_produto,
           quantidade: sale.quantidade,
-          valor: sale.valor
+          valor: sale.valor,
+          user_id: user.id
         }])
         .select()
         .maybeSingle();
@@ -134,7 +140,7 @@ export const useSales = () => {
     }
   };
 
-  const updateSale = async (id: string, updatedSale: Omit<Sale, 'id' | 'data_venda'>) => {
+  const updateSale = async (id: string, updatedSale: SaleInput) => {
     try {
       const { data, error } = await supabase
         .from('vendas')
