@@ -5,10 +5,13 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { SaleInput } from '@/types/sale';
 
 interface SaleFormProps {
-  onSubmit: (sale: SaleInput) => void;
+  onSubmit: (sale: {
+    nome_produto: string;
+    quantidade: number;
+    valor: number;
+  }) => void;
 }
 
 export const SaleForm = ({ onSubmit }: SaleFormProps) => {

@@ -4,10 +4,7 @@ export interface Sale {
   quantidade: number;
   valor: number;
   data_venda: string;
-  user_id: string;
 }
-
-export type SaleInput = Omit<Sale, 'id' | 'data_venda' | 'user_id'>;
 
 export interface WeeklyReport {
   totalSales: number;

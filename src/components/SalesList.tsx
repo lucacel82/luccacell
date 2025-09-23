@@ -3,13 +3,13 @@ import { GlassButton } from '@/components/ui/glass-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Edit2, Trash2, List, Save, X } from 'lucide-react';
-import { Sale, SaleInput } from '@/types/sale';
+import { Sale } from '@/types/sale';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 interface SalesListProps {
   sales: Sale[];
-  onUpdate: (id: string, sale: SaleInput) => void;
+  onUpdate: (id: string, sale: Omit<Sale, 'id' | 'data_venda'>) => void;
   onDelete: (id: string) => void;
 }
 
