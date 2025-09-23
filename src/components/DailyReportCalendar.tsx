@@ -189,42 +189,33 @@ export const DailyReportCalendar = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Calendar Card */}
-      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-gold/20 transition-all duration-500 animate-scale-in">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16 blur-2xl" />
-        
-        <CardHeader className="relative z-10">
+      <Card className="border-2 border-primary/20 bg-card shadow-lg hover:shadow-xl transition-all duration-300">
+        <CardHeader>
           <CardTitle className="flex items-center gap-3">
-            <div className="bg-gradient-gold p-3 rounded-2xl shadow-gold animate-pulse-glow">
+            <div className="bg-primary p-3 rounded-xl">
               <CalendarDays className="h-6 w-6 text-primary-foreground" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-primary font-poppins text-xl">Consultar Vendas por Data</span>
-              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-            </div>
+            <span className="text-primary font-poppins text-xl">Consultar Vendas por Data</span>
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="relative z-10 flex justify-center pb-8">
-          <div className="bg-gradient-to-br from-background/80 to-background/60 rounded-3xl p-6 border-2 border-primary/20 shadow-inner">
+        <CardContent className="flex justify-center pb-8">
+          <div className="bg-muted/20 rounded-2xl p-6 border border-border">
             <Calendar
               mode="single"
               selected={selectedDate}
               onSelect={(date) => date && loadSalesByDate(date)}
-              className="rounded-2xl border border-border/50 p-4 pointer-events-auto hover:border-primary/30 transition-all duration-300"
+              className="rounded-xl border border-border p-4 bg-background"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Selected Date Report */}
-      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl animate-slide-up">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/20 rounded-full translate-y-12 -translate-x-12 blur-2xl" />
-        
-        <CardHeader className="relative z-10">
+      <Card className="border-2 border-primary/20 bg-card shadow-lg">
+        <CardHeader>
           <CardTitle className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-gold">
+            <div className="bg-primary p-3 rounded-xl">
               <Package className="h-6 w-6 text-primary-foreground" />
             </div>
             <span className="text-primary font-poppins text-xl">
@@ -233,7 +224,7 @@ export const DailyReportCalendar = () => {
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="relative z-10">
+        <CardContent>
           {loading ? (
             <div className="text-center py-12 animate-pulse">
               <div className="bg-primary/20 rounded-full p-6 w-fit mx-auto mb-4">
@@ -242,13 +233,13 @@ export const DailyReportCalendar = () => {
               <p className="text-muted-foreground font-poppins">Carregando vendas...</p>
             </div>
           ) : selectedDateSales.length > 0 ? (
-            <div className="space-y-6 animate-fade-in">
+            <div className="space-y-6">
               {/* Summary */}
-              <div className="bg-gradient-gold rounded-2xl p-6 shadow-gold animate-pulse-glow">
+              <div className="bg-primary rounded-2xl p-6 text-primary-foreground">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="bg-primary-foreground/20 rounded-2xl p-4">
-                      <DollarSign className="h-8 w-8 text-primary-foreground animate-bounce" />
+                    <div className="bg-primary-foreground/20 rounded-xl p-3">
+                      <DollarSign className="h-6 w-6 text-primary-foreground" />
                     </div>
                     <div>
                       <p className="text-sm text-primary-foreground/80 font-medium mb-1">Total do Dia</p>
@@ -258,7 +249,7 @@ export const DailyReportCalendar = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <Badge variant="secondary" className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30 animate-pulse">
+                    <Badge variant="secondary" className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30">
                       {selectedDateSales.length} {selectedDateSales.length === 1 ? 'venda' : 'vendas'}
                     </Badge>
                   </div>
@@ -270,11 +261,10 @@ export const DailyReportCalendar = () => {
                 {selectedDateSales.map((sale, index) => (
                   <div
                     key={sale.id}
-                    className="flex justify-between items-center bg-gradient-to-r from-secondary/20 to-secondary/10 border border-border/50 rounded-2xl p-4 transition-all duration-300 hover:bg-secondary/30 hover:border-primary/30 hover:scale-[1.02] group animate-slide-up"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="flex justify-between items-center bg-muted/50 border border-border rounded-xl p-4 hover:bg-muted transition-colors duration-200"
                   >
                     <div className="flex-1">
-                      <h4 className="font-medium text-foreground font-poppins group-hover:text-primary transition-colors">
+                      <h4 className="font-medium text-foreground font-poppins">
                         {sale.nome_produto}
                       </h4>
                       <p className="text-sm text-muted-foreground">
@@ -282,7 +272,7 @@ export const DailyReportCalendar = () => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-primary text-lg font-poppins group-hover:scale-105 transition-transform">
+                      <div className="font-bold text-primary text-lg font-poppins">
                         {formatCurrency(sale.valor * sale.quantidade)}
                       </div>
                       <div className="text-sm text-muted-foreground mt-1">
@@ -294,20 +284,20 @@ export const DailyReportCalendar = () => {
               </div>
 
               {/* PDF Button */}
-              <div className="flex justify-center pt-6 animate-fade-in">
+              <div className="flex justify-center pt-6">
                 <Button 
                   onClick={generatePDF}
-                  className="bg-gradient-gold text-primary-foreground hover:opacity-90 flex items-center gap-2 shadow-gold group hover:scale-105 transition-all duration-300 px-8 py-3"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 px-8 py-3"
                   size="lg"
                 >
-                  <FileDown className="h-5 w-5 group-hover:animate-bounce" />
+                  <FileDown className="h-5 w-5" />
                   <span className="font-poppins font-medium">Fechar Caixa (PDF)</span>
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="text-center py-12 animate-fade-in">
-              <div className="bg-muted/20 rounded-full p-6 w-fit mx-auto mb-6 animate-pulse">
+            <div className="text-center py-12">
+              <div className="bg-muted/20 rounded-full p-6 w-fit mx-auto mb-6">
                 <Package className="h-16 w-16 text-muted-foreground" />
               </div>
               <div className="space-y-2">
