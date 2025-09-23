@@ -111,17 +111,19 @@ export const useSales = () => {
           valor: sale.valor
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       
-      setSales(prev => [data, ...prev]);
-      // Reload weekly report when new sale is added
-      loadWeeklyReport();
-      toast({
-        title: "Sucesso",
-        description: "Venda registrada com sucesso!",
-      });
+      if (data) {
+        setSales(prev => [data, ...prev]);
+        // Reload weekly report when new sale is added
+        loadWeeklyReport();
+        toast({
+          title: "Sucesso",
+          description: "Venda registrada com sucesso!",
+        });
+      }
     } catch (error) {
       console.error('Erro ao adicionar venda:', error);
       toast({
@@ -143,19 +145,21 @@ export const useSales = () => {
         })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       
-      setSales(prev => 
-        prev.map(sale => 
-          sale.id === id ? data : sale
-        )
-      );
-      toast({
-        title: "Sucesso",
-        description: "Venda atualizada com sucesso!",
-      });
+      if (data) {
+        setSales(prev => 
+          prev.map(sale => 
+            sale.id === id ? data : sale
+          )
+        );
+        toast({
+          title: "Sucesso",
+          description: "Venda atualizada com sucesso!",
+        });
+      }
     } catch (error) {
       console.error('Erro ao atualizar venda:', error);
       toast({
