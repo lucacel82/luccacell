@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Edit2, Trash2, List, Save, X } from 'lucide-react';
 import { Sale } from '@/types/sale';
+import { SaleInput } from '@/hooks/useSales';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 interface SalesListProps {
   sales: Sale[];
-  onUpdate: (id: string, sale: Omit<Sale, 'id' | 'data_venda'>) => void;
+  onUpdate: (id: string, sale: SaleInput) => void;
   onDelete: (id: string) => void;
 }
 

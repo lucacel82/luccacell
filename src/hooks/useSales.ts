@@ -3,6 +3,8 @@ import { Sale, WeeklyReport, DailyReport } from '@/types/sale';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+export type SaleInput = Omit<Sale, 'id' | 'data_venda'>;
+
 export const useSales = () => {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
@@ -101,7 +103,7 @@ export const useSales = () => {
     }
   };
 
-  const addSale = async (sale: Omit<Sale, 'id' | 'data_venda'>) => {
+  const addSale = async (sale: SaleInput) => {
     try {
       const { data, error } = await supabase
         .from('vendas')
@@ -134,7 +136,7 @@ export const useSales = () => {
     }
   };
 
-  const updateSale = async (id: string, updatedSale: Omit<Sale, 'id' | 'data_venda'>) => {
+  const updateSale = async (id: string, updatedSale: SaleInput) => {
     try {
       const { data, error } = await supabase
         .from('vendas')
