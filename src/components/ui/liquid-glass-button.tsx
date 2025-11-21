@@ -10,10 +10,10 @@ const liquidbuttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-transparent hover:scale-105 duration-300 transition text-primary",
-        gold: "bg-transparent hover:scale-105 duration-300 transition text-primary",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 duration-300 transition",
+        gold: "bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 duration-300 transition",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:
@@ -61,10 +61,9 @@ function LiquidButton({
         {...props}
       >
         <div className="absolute top-0 left-0 z-0 h-full w-full rounded-xl 
-            shadow-[0_0_6px_rgba(255,215,0,0.15),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(255,215,0,0.4),inset_-3px_-3px_0.5px_-3px_rgba(255,215,0,0.3),inset_1px_1px_1px_-0.5px_rgba(255,215,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,215,0,0.6),inset_0_0_6px_6px_rgba(255,215,0,0.12),inset_0_0_2px_2px_rgba(255,215,0,0.06),0_0_12px_rgba(255,215,0,0.25)] 
+            shadow-md
         transition-all 
-        bg-gradient-to-br from-primary/20 via-primary/10 to-transparent
-        backdrop-blur-sm border border-primary/30 hover:border-primary/50" />
+        backdrop-blur-sm" />
         <div
           className="absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden rounded-xl"
           style={{ backdropFilter: 'url("#container-glass")' }}

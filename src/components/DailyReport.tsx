@@ -33,7 +33,7 @@ export const DailyReport = ({ report }: DailyReportProps) => {
           <div className="relative z-10 flex items-center justify-between p-1">
             <div className="flex items-center gap-4">
               <div className="relative">
-                <div className="bg-gradient-gold rounded-2xl p-4 shadow-gold animate-pulse-glow">
+                <div className="bg-primary rounded-2xl p-4 shadow-md animate-pulse-glow">
                   <DollarSign className="h-8 w-8 text-primary-foreground animate-float" />
                 </div>
                 <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-primary animate-pulse" />

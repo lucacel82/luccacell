@@ -186,14 +186,14 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
   return (
     <div className="animate-fade-in space-y-6">
       {/* Summary Card */}
-      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-gold/20 transition-all duration-500 animate-scale-in">
+      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-md transition-all duration-500 animate-scale-in">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16 blur-2xl" />
         
         <CardHeader className="relative z-10">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-gradient-gold p-3 rounded-2xl shadow-gold animate-pulse-glow">
+              <div className="bg-primary p-3 rounded-2xl shadow-md animate-pulse-glow">
                 <Calculator className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
@@ -227,7 +227,7 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
               </div>
             </div>
             
-            <div className="bg-gradient-gold rounded-2xl p-6 shadow-gold animate-pulse-glow group hover:scale-105 transition-transform duration-300">
+            <div className="bg-primary rounded-2xl p-6 shadow-md animate-pulse-glow group hover:scale-105 transition-transform duration-300">
               <div className="flex items-center gap-4">
                 <div className="bg-primary-foreground/20 p-3 rounded-full">
                   <TrendingUp className="h-6 w-6 text-primary-foreground animate-float" />

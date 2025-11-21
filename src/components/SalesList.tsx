@@ -93,7 +93,7 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
 
   if (sales.length === 0) {
     return (
-      <Card className="glass-card shadow-dark">
+      <Card className="glass-card shadow-md">
         <CardContent className="flex flex-col items-center justify-center py-8">
           <List className="h-12 w-12 text-muted-foreground mb-4" />
           <p className="text-muted-foreground text-center font-poppins">
@@ -107,7 +107,7 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
   }
 
   return (
-    <Card className="glass-card shadow-dark">
+    <Card className="glass-card shadow-md">
       <CardHeader>
           <CardTitle className="text-primary flex items-center gap-2 font-poppins">
             <List className="h-5 w-5" />

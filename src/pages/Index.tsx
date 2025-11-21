@@ -19,7 +19,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-gradient-dark border-b border-border shadow-dark">
+      <div className="bg-card border-b border-border shadow-md">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-4">
             <div className="flex-shrink-0">
@@ -50,21 +50,21 @@ const Index = () => {
           <TabsList className="grid w-full grid-cols-3 bg-secondary/50 border border-border/50 rounded-xl backdrop-blur-sm">
             <TabsTrigger 
               value="sales" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground rounded-lg font-poppins"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-poppins"
             >
               <ShoppingBag className="h-4 w-4" />
               <span className="hidden sm:inline">Registrar</span> Vendas
             </TabsTrigger>
             <TabsTrigger 
               value="report" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground rounded-lg font-poppins"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-poppins"
             >
               <BarChart3 className="h-4 w-4" />
               Relatório<span className="hidden sm:inline">s</span>
             </TabsTrigger>
             <TabsTrigger 
               value="closing" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground rounded-lg font-poppins"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-poppins"
             >
               <FileText className="h-4 w-4" />
               Fechar <span className="hidden sm:inline">Caixa</span>

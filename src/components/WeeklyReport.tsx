@@ -48,21 +48,21 @@ export const WeeklyReport = ({ report }: WeeklyReportProps) => {
       <TabsList className="grid w-full grid-cols-3 bg-secondary border border-border">
         <TabsTrigger 
           value="calendar" 
-          className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
         >
           <CalendarDays className="h-4 w-4" />
           <span className="hidden sm:inline">Consulta por</span> Data
         </TabsTrigger>
         <TabsTrigger 
           value="period" 
-          className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
         >
           <Calendar className="h-4 w-4" />
           <span className="hidden sm:inline">Por</span> Período
         </TabsTrigger>
         <TabsTrigger 
           value="weekly" 
-          className="flex items-center gap-2 data-[state=active]:bg-gradient-gold data-[state=active]:text-primary-foreground"
+          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
         >
           <BarChart3 className="h-4 w-4" />
           <span className="hidden sm:inline">Relatório</span> Semanal
@@ -79,7 +79,7 @@ export const WeeklyReport = ({ report }: WeeklyReportProps) => {
 
       <TabsContent value="weekly" className="mt-6">
         <div className="space-y-6">
-          <Card className="bg-card border-border shadow-dark">
+          <Card className="bg-card border-border shadow-md">
             <CardHeader>
               <CardTitle className="text-primary flex items-center gap-2">
                 <BarChart3 className="h-5 w-5" />
@@ -88,7 +88,7 @@ export const WeeklyReport = ({ report }: WeeklyReportProps) => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gradient-gold rounded-lg p-4 text-primary-foreground">
+                <div className="bg-primary rounded-lg p-4 text-primary-foreground">
                   <div className="flex items-center gap-3">
                     <div className="bg-primary-foreground/20 rounded-full p-3">
                       <Package className="h-6 w-6" />
@@ -116,7 +116,7 @@ export const WeeklyReport = ({ report }: WeeklyReportProps) => {
           </Card>
 
           {report.sales.length > 0 && (
-            <Card className="bg-card border-border shadow-dark">
+            <Card className="bg-card border-border shadow-md">
               <CardHeader>
                 <CardTitle className="text-primary flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
@@ -152,7 +152,7 @@ export const WeeklyReport = ({ report }: WeeklyReportProps) => {
           )}
 
           {report.sales.length === 0 && (
-            <Card className="bg-card border-border shadow-dark">
+            <Card className="bg-card border-border shadow-md">
               <CardContent className="flex flex-col items-center justify-center py-8">
                 <TrendingUp className="h-12 w-12 text-muted-foreground mb-4" />
                 <p className="text-muted-foreground text-center">

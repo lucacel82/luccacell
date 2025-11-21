@@ -10,13 +10,13 @@ const glassButtonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary/80 text-primary-foreground border-primary/30 hover:bg-primary/90 hover:shadow-gold shadow-lg",
+        default: "bg-primary/80 text-primary-foreground border-primary/30 hover:bg-primary/90 hover:shadow-md shadow-lg",
         destructive: "bg-destructive/80 text-destructive-foreground border-destructive/30 hover:bg-destructive/90 shadow-lg",
         glass: "bg-white/10 text-foreground border-white/20 hover:bg-white/20 hover:border-white/30 shadow-lg",
         outline: "bg-transparent text-foreground border-border/50 hover:bg-accent/20 hover:border-accent/50",
         secondary: "bg-secondary/80 text-secondary-foreground border-secondary/30 hover:bg-secondary/90 shadow-lg",
         ghost: "bg-transparent border-transparent hover:bg-accent/20 hover:border-accent/50",
-        gold: "bg-gradient-gold text-primary-foreground border-primary/30 hover:shadow-gold shadow-lg hover:scale-105",
+        gold: "bg-primary text-primary-foreground border-primary/30 hover:shadow-md shadow-lg hover:scale-105",
       },
       size: {
         default: "h-10 px-6 py-2",

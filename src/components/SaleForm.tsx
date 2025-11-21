@@ -60,7 +60,7 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
   };
 
   return (
-    <Card className="glass-card shadow-dark">
+    <Card className="glass-card shadow-md">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2 font-poppins">
           <Plus className="h-5 w-5" />

@@ -128,13 +128,13 @@ export const PeriodReport = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Search Section */}
-      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-gold/20 transition-all duration-500 animate-scale-in">
+      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-md transition-all duration-500 animate-scale-in">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
         <div className="absolute top-0 left-0 w-24 h-24 bg-accent/20 rounded-full -translate-y-12 -translate-x-12 blur-2xl" />
         
         <CardHeader className="relative z-10">
           <CardTitle className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-gold animate-pulse-glow">
+            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-md animate-pulse-glow">
               <Search className="h-6 w-6 text-primary-foreground" />
             </div>
             <div className="flex items-center gap-2">
@@ -192,7 +192,7 @@ export const PeriodReport = () => {
             <Button
               onClick={handleFilter}
               disabled={!date?.from || !date?.to || loading}
-              className="bg-gradient-gold text-primary-foreground hover:from-primary/90 hover:to-primary/70 border border-primary/50 shadow-gold animate-scale-in group hover:scale-105 transition-all duration-300"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 border border-primary/50 shadow-md animate-scale-in group hover:scale-105 transition-all duration-300"
               size="lg"
             >
               {loading ? (
@@ -234,7 +234,7 @@ export const PeriodReport = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-gold rounded-2xl p-6 shadow-gold animate-pulse-glow group hover:scale-105 transition-transform duration-300">
+                <div className="bg-primary rounded-2xl p-6 shadow-md animate-pulse-glow group hover:scale-105 transition-transform duration-300">
                   <div className="flex items-center gap-4">
                     <div className="bg-primary-foreground/20 rounded-2xl p-4">
                       <DollarSign className="h-8 w-8 text-primary-foreground animate-bounce" />
@@ -277,7 +277,7 @@ export const PeriodReport = () => {
               
               <CardHeader className="relative z-10">
                 <CardTitle className="flex items-center gap-3">
-                  <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-gold">
+                  <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-md">
                     <TrendingUp className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <div className="flex items-center gap-2">
