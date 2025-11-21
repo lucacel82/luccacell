@@ -71,7 +71,7 @@ export const Auth = () => {
           </div>
         </div>
 
-        <Card className="bg-card/90 backdrop-blur border-border shadow-dark">
+        <Card className="bg-card/90 backdrop-blur border-border shadow-md">
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Login</TabsTrigger>
@@ -111,7 +111,7 @@ export const Auth = () => {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-gold text-primary-foreground hover:opacity-90"
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                     disabled={isLoading}
                   >
                     {isLoading ? "Entrando..." : "Entrar"}
@@ -165,7 +165,7 @@ export const Auth = () => {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-gold text-primary-foreground hover:opacity-90"
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                     disabled={isLoading}
                   >
                     {isLoading ? "Criando conta..." : "Criar conta"}
