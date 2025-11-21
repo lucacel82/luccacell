@@ -8,94 +8,83 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
-    --foreground: 45 100% 85%;
-
-    --card: 0 0% 12%;
-    --card-foreground: 45 100% 90%;
-
-    --popover: 0 0% 10%;
-    --popover-foreground: 45 100% 90%;
-
-    --primary: 45 100% 65%;
-    --primary-foreground: 0 0% 5%;
-
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 45 100% 85%;
-
-    --muted: 0 0% 18%;
-    --muted-foreground: 45 20% 65%;
-
-    --accent: 45 100% 75%;
-    --accent-foreground: 0 0% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 0 0% 20%;
-    --input: 0 0% 15%;
-    --ring: 45 100% 65%;
-
-    --gradient-gold: linear-gradient(135deg, hsl(45 100% 75%), hsl(45 100% 65%));
-    --gradient-dark: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 12%));
-    --shadow-gold: 0 10px 30px -10px hsl(45 100% 65% / 0.3);
-    --shadow-dark: 0 4px 20px -2px hsl(0 0% 0% / 0.8);
-
+    --background: oklch(0.9900 0 0);
+    --foreground: oklch(0 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0 0 0);
+    --popover: oklch(0.9900 0 0);
+    --popover-foreground: oklch(0 0 0);
+    --primary: oklch(0 0 0);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.9400 0 0);
+    --secondary-foreground: oklch(0 0 0);
+    --muted: oklch(0.9700 0 0);
+    --muted-foreground: oklch(0.4400 0 0);
+    --accent: oklch(0.9400 0 0);
+    --accent-foreground: oklch(0 0 0);
+    --destructive: oklch(0.6300 0.1900 23.0300);
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.9200 0 0);
+    --input: oklch(0.9400 0 0);
+    --ring: oklch(0 0 0);
+    --chart-1: oklch(0.8100 0.1700 75.3500);
+    --chart-2: oklch(0.5500 0.2200 264.5300);
+    --chart-3: oklch(0.7200 0 0);
+    --chart-4: oklch(0.9200 0 0);
+    --chart-5: oklch(0.5600 0 0);
+    --sidebar: oklch(0.9900 0 0);
+    --sidebar-foreground: oklch(0 0 0);
+    --sidebar-primary: oklch(0 0 0);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.9400 0 0);
+    --sidebar-accent-foreground: oklch(0 0 0);
+    --sidebar-border: oklch(0.9400 0 0);
+    --sidebar-ring: oklch(0 0 0);
+    
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
+    --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
+    --shadow-sm: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 1px 2px -1px hsl(0 0% 0% / 0.18);
+    --shadow: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 1px 2px -1px hsl(0 0% 0% / 0.18);
+    --shadow-md: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 2px 4px -1px hsl(0 0% 0% / 0.18);
+    --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 4px 6px -1px hsl(0 0% 0% / 0.18);
+    --shadow-xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 8px 10px -1px hsl(0 0% 0% / 0.18);
+    --shadow-2xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.45);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: oklch(0 0 0);
+    --foreground: oklch(1 0 0);
+    --card: oklch(0.1400 0 0);
+    --card-foreground: oklch(1 0 0);
+    --popover: oklch(0.1800 0 0);
+    --popover-foreground: oklch(1 0 0);
+    --primary: oklch(1 0 0);
+    --primary-foreground: oklch(0 0 0);
+    --secondary: oklch(0.2500 0 0);
+    --secondary-foreground: oklch(1 0 0);
+    --muted: oklch(0.2300 0 0);
+    --muted-foreground: oklch(0.7200 0 0);
+    --accent: oklch(0.3200 0 0);
+    --accent-foreground: oklch(1 0 0);
+    --destructive: oklch(0.6900 0.2000 23.9100);
+    --destructive-foreground: oklch(0 0 0);
+    --border: oklch(0.2600 0 0);
+    --input: oklch(0.3200 0 0);
+    --ring: oklch(0.7200 0 0);
+    --chart-1: oklch(0.8100 0.1700 75.3500);
+    --chart-2: oklch(0.5800 0.2100 260.8400);
+    --chart-3: oklch(0.5600 0 0);
+    --chart-4: oklch(0.4400 0 0);
+    --chart-5: oklch(0.9200 0 0);
+    --sidebar: oklch(0.1800 0 0);
+    --sidebar-foreground: oklch(1 0 0);
+    --sidebar-primary: oklch(1 0 0);
+    --sidebar-primary-foreground: oklch(0 0 0);
+    --sidebar-accent: oklch(0.3200 0 0);
+    --sidebar-accent-foreground: oklch(1 0 0);
+    --sidebar-border: oklch(0.3200 0 0);
+    --sidebar-ring: oklch(0.7200 0 0);
   }
 }
 
@@ -106,20 +95,26 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
   }
 
   /* Glassmorphism effects */
   .glass {
-    @apply backdrop-blur-md bg-white/10 border border-white/20;
+    @apply backdrop-blur-md border;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
   }
   
   .glass-dark {
-    @apply backdrop-blur-md bg-black/20 border border-white/10;
+    @apply backdrop-blur-md border;
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
   }
   
   .glass-card {
-    @apply backdrop-blur-lg bg-card/80 border border-border/50 rounded-xl;
+    @apply backdrop-blur-lg border rounded-xl;
+    background: color-mix(in srgb, var(--card) 80%, transparent);
+    border-color: color-mix(in srgb, var(--border) 50%, transparent);
   }
 }
