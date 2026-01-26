@@ -19,21 +19,21 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-card border-b border-border shadow-md">
+      <div className="glass-card border-b border-border/50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-4">
             <div className="flex-shrink-0">
               <img 
                 src="/lovable-uploads/6bfd736e-2813-4131-a5a5-76c6df038df8.png" 
                 alt="Lucca Cell Logo" 
-                className="h-16 w-auto object-contain rounded-xl"
+                className="h-16 w-auto object-contain rounded-2xl"
               />
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl md:text-2xl font-bold text-primary truncate font-poppins">
+              <h1 className="text-xl md:text-2xl font-bold text-foreground truncate">
                 Sistema de Controle de Vendas
               </h1>
-              <p className="text-sm md:text-base text-muted-foreground font-poppins">
+              <p className="text-sm md:text-base text-muted-foreground">
                 Assistência Técnica & Acessórios
               </p>
             </div>
@@ -47,24 +47,24 @@ const Index = () => {
         <DailyReport report={dailyReport} />
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-secondary/50 border border-border/50 rounded-xl backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-3 glass-card p-1.5">
             <TabsTrigger 
               value="sales" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-poppins"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
             >
               <ShoppingBag className="h-4 w-4" />
               <span className="hidden sm:inline">Registrar</span> Vendas
             </TabsTrigger>
             <TabsTrigger 
               value="report" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-poppins"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
             >
               <BarChart3 className="h-4 w-4" />
               Relatório<span className="hidden sm:inline">s</span>
             </TabsTrigger>
             <TabsTrigger 
               value="closing" 
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg font-poppins"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
             >
               <FileText className="h-4 w-4" />
               Fechar <span className="hidden sm:inline">Caixa</span>

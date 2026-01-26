@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar as CalendarIcon, Search, TrendingUp, Package, DollarSign, Printer, Sparkles, Calendar } from 'lucide-react';
+import { Calendar as CalendarIcon, Search, TrendingUp, Package, DollarSign, Printer, Calendar } from 'lucide-react';
 import { format, startOfWeek, endOfWeek } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { DateRange } from 'react-day-picker';
@@ -7,9 +7,7 @@ import { DateRange } from 'react-day-picker';
 import { cn } from '@/lib/utils';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { GlassEffect } from '@/components/ui/glass-effect';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { Button } from '@/components/ui/button';
 import { usePeriodSales } from '@/hooks/usePeriodSales';
@@ -53,18 +51,18 @@ export const PeriodReport = () => {
         <head>
           <title>Relatório do Período - Lucca Cell</title>
           <style>
-            body { font-family: 'Poppins', Arial, sans-serif; margin: 20px; }
+            body { font-family: 'Ubuntu', Arial, sans-serif; margin: 20px; background: #000; color: #fff; }
             .header { text-align: center; margin-bottom: 30px; }
-            .logo { color: #FFD700; font-size: 24px; font-weight: 600; }
-            .period { color: #666; margin: 10px 0; }
+            .logo { color: #fff; font-size: 24px; font-weight: 600; }
+            .period { color: #888; margin: 10px 0; }
             .summary { display: flex; justify-content: space-around; margin: 20px 0; }
             .summary-item { text-align: center; padding: 10px; }
-            .summary-value { font-size: 18px; font-weight: bold; color: #FFD700; }
+            .summary-value { font-size: 18px; font-weight: bold; color: #fff; }
             table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-            th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-            th { background-color: #f9f9f9; color: #FFD700; font-weight: 600; }
-            tr:nth-child(even) { background-color: #f9f9f9; }
-            .total-row { background-color: #FFD700; color: white; font-weight: bold; }
+            th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+            th { background-color: #1a1a1a; color: #fff; font-weight: 600; }
+            tr:nth-child(even) { background-color: #111; }
+            .total-row { background-color: #fff; color: #000; font-weight: bold; }
             .total-value { font-size: 18px; }
           </style>
         </head>
@@ -126,219 +124,197 @@ export const PeriodReport = () => {
   const hasSearched = periodReport.startDate !== null;
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {/* Search Section */}
-      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-md transition-all duration-500 animate-scale-in">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
-        <div className="absolute top-0 left-0 w-24 h-24 bg-accent/20 rounded-full -translate-y-12 -translate-x-12 blur-2xl" />
-        
-        <CardHeader className="relative z-10">
-          <CardTitle className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-md animate-pulse-glow">
-              <Search className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-primary font-poppins text-xl">Consultar Vendas por Período</span>
-              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-            </div>
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="relative z-10 space-y-6">
-          <div className="flex flex-col sm:flex-row gap-4 items-end">
-            <div className="flex-1 animate-slide-up">
-              <label className="text-sm font-medium text-foreground mb-3 block flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-primary" />
-                Selecione o período:
-              </label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal bg-transparent border-2 border-primary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4 text-primary group-hover:animate-bounce" />
-                    {date?.from ? (
-                      date.to ? (
-                        <>
-                          {format(date.from, "dd/MM/yyyy", { locale: ptBR })} -{" "}
-                          {format(date.to, "dd/MM/yyyy", { locale: ptBR })}
-                        </>
-                      ) : (
-                        format(date.from, "dd/MM/yyyy", { locale: ptBR })
-                      )
-                    ) : (
-                      <span>Escolha as datas</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <CalendarComponent
-                    initialFocus
-                    mode="range"
-                    defaultMonth={date?.from}
-                    selected={date}
-                    onSelect={setDate}
-                    numberOfMonths={2}
-                    className={cn("p-3 pointer-events-auto")}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            
-            <Button
-              onClick={handleFilter}
-              disabled={!date?.from || !date?.to || loading}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 border border-primary/50 shadow-md animate-scale-in group hover:scale-105 transition-all duration-300"
-              size="lg"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
-                  Carregando...
-                </>
-              ) : (
-                <>
-                  <Search className="h-4 w-4 mr-2 group-hover:animate-pulse" />
-                  Filtrar
-                </>
-              )}
-            </Button>
+      <div className="glass-card p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="bg-primary p-3 rounded-2xl shadow-lg">
+            <Search className="h-6 w-6 text-primary-foreground" />
           </div>
-        </CardContent>
-      </Card>
+          <h3 className="text-xl font-semibold text-foreground">Consultar Vendas por Período</h3>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-4 items-end">
+          <div className="flex-1">
+            <label className="text-sm font-medium text-foreground mb-3 block flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+              Selecione o período:
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal bg-input border-border hover:bg-secondary transition-all duration-300",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                  {date?.from ? (
+                    date.to ? (
+                      <>
+                        {format(date.from, "dd/MM/yyyy", { locale: ptBR })} -{" "}
+                        {format(date.to, "dd/MM/yyyy", { locale: ptBR })}
+                      </>
+                    ) : (
+                      format(date.from, "dd/MM/yyyy", { locale: ptBR })
+                    )
+                  ) : (
+                    <span>Escolha as datas</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarComponent
+                  initialFocus
+                  mode="range"
+                  defaultMonth={date?.from}
+                  selected={date}
+                  onSelect={setDate}
+                  numberOfMonths={2}
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          
+          <LiquidButton
+            onClick={handleFilter}
+            disabled={!date?.from || !date?.to || loading}
+            variant="gold"
+            size="lg"
+          >
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2" />
+                Carregando...
+              </>
+            ) : (
+              <>
+                <Search className="h-4 w-4 mr-2" />
+                Filtrar
+              </>
+            )}
+          </LiquidButton>
+        </div>
+      </div>
 
       {hasSearched && (
         <>
           {/* Results Summary */}
-          <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl animate-slide-up">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-32 h-32 bg-primary/10 rounded-full translate-y-16 translate-x-16 blur-3xl" />
-            
-            <CardContent className="relative z-10 p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-primary/15 to-accent/10 rounded-2xl p-6 border border-primary/30 hover:border-primary/50 transition-all duration-300 group animate-scale-in">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-primary/20 rounded-2xl p-4 group-hover:bg-primary/30 transition-colors">
-                      <Package className="h-8 w-8 text-primary animate-float" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-1">Total de Vendas</p>
-                      <p className="text-3xl font-bold text-primary font-poppins group-hover:scale-105 transition-transform">
-                        {periodReport.totalSales}
-                      </p>
-                    </div>
+          <div className="glass-card p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-secondary/50 rounded-2xl p-5 border border-border/50">
+                <div className="flex items-center gap-4">
+                  <div className="bg-primary/10 rounded-xl p-3">
+                    <Package className="h-8 w-8 text-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground mb-1">Total de Vendas</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {periodReport.totalSales}
+                    </p>
                   </div>
                 </div>
+              </div>
 
-                <div className="bg-primary rounded-2xl p-6 shadow-md animate-pulse-glow group hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-primary-foreground/20 rounded-2xl p-4">
-                      <DollarSign className="h-8 w-8 text-primary-foreground animate-bounce" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-primary-foreground/80 mb-1">Valor Total</p>
-                      <p className="text-3xl font-bold text-primary-foreground font-poppins">
-                        {formatCurrency(periodReport.totalValue)}
-                      </p>
-                    </div>
+              <div className="bg-primary rounded-2xl p-5 shadow-lg">
+                <div className="flex items-center gap-4">
+                  <div className="bg-primary-foreground/20 rounded-xl p-3">
+                    <DollarSign className="h-8 w-8 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-primary-foreground/80 mb-1">Valor Total</p>
+                    <p className="text-3xl font-bold text-primary-foreground">
+                      {formatCurrency(periodReport.totalValue)}
+                    </p>
                   </div>
                 </div>
               </div>
-              
-              <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4 animate-fade-in">
-                <div className="bg-muted/20 rounded-2xl px-4 py-2 border border-muted-foreground/20">
-                  <p className="text-sm text-muted-foreground font-poppins flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    Período: {periodReport.startDate && format(periodReport.startDate, "dd/MM/yyyy", { locale: ptBR })} até{" "}
-                    {periodReport.endDate && format(periodReport.endDate, "dd/MM/yyyy", { locale: ptBR })}
-                  </p>
-                </div>
-                <Button
-                  onClick={handlePrint}
-                  disabled={periodReport.sales.length === 0}
-                  variant="outline"
-                  className="border-primary/50 text-primary hover:bg-primary/10 group transition-all duration-300"
-                >
-                  <Printer className="h-4 w-4 mr-2 group-hover:animate-bounce" />
-                  Imprimir Relatório
-                </Button>
+            </div>
+            
+            <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="bg-secondary/30 rounded-xl px-4 py-2 border border-border/50">
+                <p className="text-sm text-muted-foreground flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  Período: {periodReport.startDate && format(periodReport.startDate, "dd/MM/yyyy", { locale: ptBR })} até{" "}
+                  {periodReport.endDate && format(periodReport.endDate, "dd/MM/yyyy", { locale: ptBR })}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <Button
+                onClick={handlePrint}
+                disabled={periodReport.sales.length === 0}
+                variant="outline"
+                className="border-border hover:bg-secondary"
+              >
+                <Printer className="h-4 w-4 mr-2" />
+                Imprimir Relatório
+              </Button>
+            </div>
+          </div>
 
           {/* Sales List */}
           {periodReport.sales.length > 0 ? (
-            <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl animate-fade-in">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+            <div className="glass-card p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-primary p-3 rounded-2xl shadow-lg">
+                  <TrendingUp className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xl font-semibold text-foreground">Vendas do Período</h3>
+                  <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
+                    {periodReport.sales.length} {periodReport.sales.length === 1 ? 'venda' : 'vendas'}
+                  </Badge>
+                </div>
+              </div>
               
-              <CardHeader className="relative z-10">
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-2xl shadow-md">
-                    <TrendingUp className="h-6 w-6 text-primary-foreground" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary font-poppins text-xl">Vendas do Período</span>
-                    <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30 animate-pulse">
-                      {periodReport.sales.length} {periodReport.sales.length === 1 ? 'venda' : 'vendas'}
-                    </Badge>
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent className="relative z-10">
-                <div className="space-y-3">
-                  {periodReport.sales.map((sale, index) => (
-                    <div
-                      key={sale.id}
-                      className="flex justify-between items-center bg-gradient-to-r from-secondary/20 to-secondary/10 border border-border/50 rounded-2xl p-4 transition-all duration-300 hover:bg-secondary/30 hover:border-primary/30 hover:scale-[1.02] group animate-slide-up"
-                      style={{ animationDelay: `${index * 50}ms` }}
-                    >
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-foreground font-poppins group-hover:text-primary transition-colors">
-                          {sale.nome_produto}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {formatDate(sale.data_venda)}
-                        </p>
+              <div className="space-y-3">
+                {periodReport.sales.map((sale) => (
+                  <div
+                    key={sale.id}
+                    className="flex justify-between items-center bg-secondary/50 border border-border/50 rounded-2xl p-4 transition-all duration-300 hover:bg-secondary/70"
+                  >
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-foreground">
+                        {sale.nome_produto}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {formatDate(sale.data_venda)}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-foreground text-lg">
+                        {formatCurrency(sale.quantidade * sale.valor)}
                       </div>
-                      <div className="text-right">
-                        <div className="font-bold text-primary font-poppins text-lg group-hover:scale-105 transition-transform">
-                          {formatCurrency(sale.quantidade * sale.valor)}
-                        </div>
-                        <div className="flex gap-2 mt-2">
-                          <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground border border-border/30">
-                            Qtd: {sale.quantidade}
-                          </Badge>
-                          <Badge variant="outline" className="border-primary/50 text-primary bg-primary/5">
-                            Unit: {formatCurrency(sale.valor)}
-                          </Badge>
-                        </div>
+                      <div className="flex gap-2 mt-2">
+                        <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
+                          Qtd: {sale.quantidade}
+                        </Badge>
+                        <Badge variant="outline" className="border-border text-muted-foreground">
+                          Unit: {formatCurrency(sale.valor)}
+                        </Badge>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </div>
+                ))}
+              </div>
+            </div>
           ) : (
-            <Card className="relative overflow-hidden border-2 border-dashed border-muted-foreground/30 bg-gradient-to-br from-muted/10 to-muted/5 animate-fade-in">
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <div className="bg-muted/20 rounded-full p-6 mb-4 animate-pulse">
+            <div className="glass-card p-8">
+              <div className="flex flex-col items-center justify-center">
+                <div className="bg-secondary/30 rounded-full p-6 mb-4">
                   <TrendingUp className="h-16 w-16 text-muted-foreground" />
                 </div>
                 <div className="text-center space-y-2">
-                  <p className="text-muted-foreground font-poppins font-medium">
+                  <p className="text-muted-foreground font-medium">
                     📊 Nenhuma venda registrada nesse período
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Tente selecionar um intervalo diferente ou verifique se há vendas cadastradas.
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </>
       )}
