@@ -1,6 +1,5 @@
 import { GlassButton } from '@/components/ui/glass-button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Download, Share, TrendingUp, Calculator, Sparkles } from 'lucide-react';
+import { FileText, Download, Share, TrendingUp, Calculator } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Sale } from '@/types/sale';
 import jsPDF from 'jspdf';
@@ -31,7 +30,6 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
 
   const generatePDF = async () => {
     try {
-      // Verificar se há dados antes de gerar o PDF
       console.log('Gerando PDF com dados:', { dailySales, dailyTotal });
       
       if (!dailySales) {
@@ -56,19 +54,16 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
         doc.setFontSize(12);
         doc.text('Nenhuma venda registrada hoje.', 20, 60);
         
-        // Ainda mostrar o total (que será R$ 0,00)
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
         doc.text(`Total do Dia: ${formatCurrency(dailyTotal)}`, 20, 80);
       } else {
-        // Table data
         const tableData = dailySales.map(sale => [
           sale.nome_produto,
           sale.quantidade.toString(),
           formatCurrency(sale.valor)
         ]);
 
-        // Add table using autoTable
         autoTable(doc, {
           head: [['Produto', 'Quantidade', 'Valor']],
           body: tableData,
@@ -79,8 +74,8 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
             cellPadding: 5,
           },
           headStyles: {
-            fillColor: [45, 45, 45],
-            textColor: [255, 215, 0],
+            fillColor: [30, 30, 30],
+            textColor: [255, 255, 255],
             fontSize: 11,
             fontStyle: 'bold',
           },
@@ -89,14 +84,12 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
           },
         });
 
-        // Total
         const finalY = (doc as any).lastAutoTable.finalY + 10;
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
         doc.text(`Total do Dia: ${formatCurrency(dailyTotal)}`, 190, finalY, { align: 'right' });
       }
 
-      // Footer
       const pageHeight = doc.internal.pageSize.height;
       doc.setFontSize(8);
       doc.setFont('helvetica', 'normal');
@@ -144,14 +137,12 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
       const doc = await generatePDF();
       if (!doc) return;
 
-      // Convert PDF to blob
       const pdfBlob = doc.output('blob');
       const fileName = `fechamento-caixa-${getCurrentDate().replace(/\//g, '-')}.pdf`;
       const file = new File([pdfBlob], fileName, {
         type: 'application/pdf',
       });
 
-      // Check if Web Share API is available
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           title: `Fechamento de Caixa - ${getCurrentDate()}`,
@@ -165,7 +156,6 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
           description: "PDF compartilhado com sucesso!",
         });
       } else {
-        // Fallback: download the file
         console.log('Web Share API não disponível, fazendo download...');
         await downloadPDF();
         toast({
@@ -186,107 +176,97 @@ export const CashClosing = ({ dailySales, dailyTotal }: CashClosingProps) => {
   return (
     <div className="animate-fade-in space-y-6">
       {/* Summary Card */}
-      <Card className="relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card/90 to-card/80 shadow-2xl hover:shadow-md transition-all duration-500 animate-scale-in">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/10 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16 blur-2xl" />
+      <div className="glass-card-interactive p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-primary p-3 rounded-2xl shadow-lg">
+              <Calculator className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-foreground">Fechamento de Caixa</h3>
+              <p className="text-sm text-muted-foreground">
+                Relatório do dia {getCurrentDate()}
+              </p>
+            </div>
+          </div>
+          <TrendingUp className="h-6 w-6 text-muted-foreground" />
+        </div>
         
-        <CardHeader className="relative z-10">
-          <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-primary p-3 rounded-2xl shadow-md animate-pulse-glow">
-                <Calculator className="h-6 w-6 text-primary-foreground" />
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="bg-secondary/50 rounded-2xl p-5 border border-border/50">
+            <div className="flex items-center gap-4">
+              <div className="bg-primary/10 p-3 rounded-xl">
+                <FileText className="h-6 w-6 text-foreground" />
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-primary font-poppins text-xl">Fechamento de Caixa</span>
-                  <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-                </div>
-                <p className="text-sm text-muted-foreground font-poppins">
-                  Relatório do dia {getCurrentDate()}
+                <p className="text-sm font-medium text-muted-foreground">Vendas Realizadas</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {dailySales.length}
                 </p>
               </div>
             </div>
-            <TrendingUp className="h-6 w-6 text-primary animate-bounce" />
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="relative z-10 space-y-6">
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up">
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-6 border border-primary/20 hover:border-primary/40 transition-all duration-300 group">
-              <div className="flex items-center gap-4">
-                <div className="bg-primary/20 p-3 rounded-full group-hover:bg-primary/30 transition-colors">
-                  <FileText className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Vendas Realizadas</p>
-                  <p className="text-2xl font-bold text-primary font-poppins group-hover:scale-105 transition-transform">
-                    {dailySales.length}
-                  </p>
-                </div>
+          </div>
+          
+          <div className="bg-primary rounded-2xl p-5 shadow-lg">
+            <div className="flex items-center gap-4">
+              <div className="bg-primary-foreground/20 p-3 rounded-xl">
+                <TrendingUp className="h-6 w-6 text-primary-foreground" />
               </div>
-            </div>
-            
-            <div className="bg-primary rounded-2xl p-6 shadow-md animate-pulse-glow group hover:scale-105 transition-transform duration-300">
-              <div className="flex items-center gap-4">
-                <div className="bg-primary-foreground/20 p-3 rounded-full">
-                  <TrendingUp className="h-6 w-6 text-primary-foreground animate-float" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-primary-foreground/80">Total Arrecadado</p>
-                  <p className="text-3xl font-bold text-primary-foreground font-poppins">
-                    {formatCurrency(dailyTotal)}
-                  </p>
-                </div>
+              <div>
+                <p className="text-sm font-medium text-primary-foreground/80">Total Arrecadado</p>
+                <p className="text-2xl font-bold text-primary-foreground">
+                  {formatCurrency(dailyTotal)}
+                </p>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Actions */}
-          <div className="space-y-3 animate-fade-in">
-            <div className="flex gap-3">
-              <GlassButton 
-                onClick={downloadPDF}
-                variant="glass"
-                size="lg"
-                className="flex-1 font-poppins group hover:scale-105 transition-all duration-300"
-              >
-                <Download className="h-4 w-4 mr-2 group-hover:animate-bounce" />
-                Baixar PDF
-              </GlassButton>
-              
-              <GlassButton 
-                onClick={sharePDF}
-                variant="gold"
-                size="lg"
-                className="flex-1 font-poppins group hover:scale-105 transition-all duration-300"
-              >
-                <Share className="h-4 w-4 mr-2 group-hover:animate-pulse" />
-                Compartilhar
-              </GlassButton>
-            </div>
+        {/* Actions */}
+        <div className="space-y-3">
+          <div className="flex gap-3">
+            <GlassButton 
+              onClick={downloadPDF}
+              variant="glass"
+              size="lg"
+              className="flex-1"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Baixar PDF
+            </GlassButton>
             
-            {dailySales.length === 0 && (
-              <div className="text-center p-6 bg-muted/20 rounded-2xl border-2 border-dashed border-muted-foreground/30 animate-pulse">
-                <p className="text-muted-foreground font-poppins">
-                  📊 Nenhuma venda registrada hoje
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Quando houver vendas, elas aparecerão aqui!
-                </p>
-              </div>
-            )}
-            
-            {dailySales.length > 0 && (
-              <div className="text-center p-4 bg-primary/5 rounded-2xl border border-primary/20 animate-fade-in">
-                <p className="text-primary font-medium font-poppins flex items-center justify-center gap-2">
-                  🎉 <span>Parabéns! {dailySales.length} vendas realizadas hoje</span>
-                </p>
-              </div>
-            )}
+            <GlassButton 
+              onClick={sharePDF}
+              variant="default"
+              size="lg"
+              className="flex-1"
+            >
+              <Share className="h-4 w-4 mr-2" />
+              Compartilhar
+            </GlassButton>
           </div>
-        </CardContent>
-      </Card>
+          
+          {dailySales.length === 0 && (
+            <div className="text-center p-6 bg-secondary/30 rounded-2xl border border-border/50">
+              <p className="text-muted-foreground">
+                📊 Nenhuma venda registrada hoje
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Quando houver vendas, elas aparecerão aqui!
+              </p>
+            </div>
+          )}
+          
+          {dailySales.length > 0 && (
+            <div className="text-center p-4 bg-primary/5 rounded-2xl border border-border/50">
+              <p className="text-foreground font-medium flex items-center justify-center gap-2">
+                🎉 <span>Parabéns! {dailySales.length} vendas realizadas hoje</span>
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

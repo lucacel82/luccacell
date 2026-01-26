@@ -1,94 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Design System: MADE UI Kit - Black Theme
+   Colors: Pure black background with gray scale accents
+   Typography: Ubuntu font family
+   Effects: Modern glassmorphism with subtle gradients
 */
 
 @layer base {
   :root {
-    --background: 0 0% 5%;
-    --foreground: 45 100% 95%;
-    --card: 0 0% 8%;
-    --card-foreground: 45 100% 95%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 45 100% 95%;
-    --primary: 45 100% 50%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 45 100% 90%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 45 20% 60%;
-    --accent: 45 80% 45%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 70% 50%;
+    /* Core Colors - Black/Gray scale */
+    --background: 0 0% 0%;           /* #000000 - Pure black */
+    --foreground: 0 0% 95%;          /* #F2F2F2 - Almost white */
+    
+    /* Card - Dark gray for elevation */
+    --card: 0 0% 4%;                 /* #0A0A0A - Dark-1 */
+    --card-foreground: 0 0% 95%;
+    
+    /* Popover */
+    --popover: 0 0% 5.5%;            /* #0E0E0E - Dark-2 */
+    --popover-foreground: 0 0% 95%;
+    
+    /* Primary - White accent for contrast */
+    --primary: 0 0% 100%;            /* Pure white */
+    --primary-foreground: 0 0% 0%;   /* Pure black */
+    
+    /* Secondary - Dark gray */
+    --secondary: 0 0% 8.5%;          /* #161616 - Dark-3 */
+    --secondary-foreground: 0 0% 85%;
+    
+    /* Muted - Medium gray */
+    --muted: 0 0% 17%;               /* #2B2B2B - Dark-4 */
+    --muted-foreground: 0 0% 55%;    /* #8C8C8C */
+    
+    /* Accent - Light gray */
+    --accent: 0 0% 17%;              /* #2B2B2B */
+    --accent-foreground: 0 0% 95%;
+    
+    /* Destructive */
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 45 30% 20%;
-    --input: 0 0% 15%;
-    --ring: 45 100% 50%;
-    --chart-1: 45 100% 50%;
-    --chart-2: 45 80% 40%;
-    --chart-3: 45 60% 30%;
-    --chart-4: 0 0% 40%;
-    --chart-5: 0 0% 60%;
-    --sidebar: 0 0% 6%;
-    --sidebar-foreground: 45 100% 95%;
-    --sidebar-primary: 45 100% 50%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 45 80% 45%;
-    --sidebar-accent-foreground: 0 0% 5%;
-    --sidebar-border: 45 30% 20%;
-    --sidebar-ring: 45 100% 50%;
     
-    --radius: 0.5rem;
-    --shadow-2xs: 0px 1px 2px 0px hsl(45 100% 50% / 0.05);
-    --shadow-xs: 0px 1px 2px 0px hsl(45 100% 50% / 0.08);
-    --shadow-sm: 0px 1px 3px 0px hsl(45 100% 50% / 0.1), 0px 1px 2px -1px hsl(45 100% 50% / 0.1);
-    --shadow: 0px 1px 3px 0px hsl(45 100% 50% / 0.1), 0px 1px 2px -1px hsl(45 100% 50% / 0.1);
-    --shadow-md: 0px 4px 6px -1px hsl(45 100% 50% / 0.1), 0px 2px 4px -2px hsl(45 100% 50% / 0.1);
-    --shadow-lg: 0px 10px 15px -3px hsl(45 100% 50% / 0.1), 0px 4px 6px -4px hsl(45 100% 50% / 0.1);
-    --shadow-xl: 0px 20px 25px -5px hsl(45 100% 50% / 0.1), 0px 8px 10px -6px hsl(45 100% 50% / 0.1);
-    --shadow-2xl: 0px 25px 50px -12px hsl(45 100% 50% / 0.25);
+    /* Border - Subtle gray */
+    --border: 0 0% 15%;              /* Subtle border */
+    --input: 0 0% 8.5%;              /* #161616 */
+    --ring: 0 0% 40%;
     
-    /* Gold gradient tokens */
-    --gold-start: 45 100% 50%;
-    --gold-end: 35 100% 40%;
+    /* Charts */
+    --chart-1: 0 0% 100%;
+    --chart-2: 0 0% 75%;
+    --chart-3: 0 0% 55%;
+    --chart-4: 0 0% 35%;
+    --chart-5: 0 0% 20%;
+    
+    /* Sidebar */
+    --sidebar: 0 0% 2%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 17%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 0 0% 40%;
+    
+    --radius: 1rem;
+    
+    /* Shadows - Subtle glow effects */
+    --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.3);
+    --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.4);
+    --shadow-sm: 0px 1px 3px 0px hsl(0 0% 0% / 0.5), 0px 1px 2px -1px hsl(0 0% 0% / 0.3);
+    --shadow: 0px 1px 3px 0px hsl(0 0% 0% / 0.5), 0px 1px 2px -1px hsl(0 0% 0% / 0.3);
+    --shadow-md: 0px 4px 6px -1px hsl(0 0% 0% / 0.5), 0px 2px 4px -2px hsl(0 0% 0% / 0.3);
+    --shadow-lg: 0px 10px 15px -3px hsl(0 0% 0% / 0.5), 0px 4px 6px -4px hsl(0 0% 0% / 0.3);
+    --shadow-xl: 0px 20px 25px -5px hsl(0 0% 0% / 0.5), 0px 8px 10px -6px hsl(0 0% 0% / 0.3);
+    --shadow-2xl: 0px 25px 50px -12px hsl(0 0% 0% / 0.6);
   }
 
   .dark {
-    --background: 0 0% 5%;
-    --foreground: 45 100% 95%;
-    --card: 0 0% 8%;
-    --card-foreground: 45 100% 95%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 45 100% 95%;
-    --primary: 45 100% 50%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 45 100% 90%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 45 20% 60%;
-    --accent: 45 80% 45%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 70% 50%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 5.5%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 8.5%;
+    --secondary-foreground: 0 0% 85%;
+    --muted: 0 0% 17%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 0 0% 17%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 45 30% 20%;
-    --input: 0 0% 15%;
-    --ring: 45 100% 50%;
-    --chart-1: 45 100% 50%;
-    --chart-2: 45 80% 40%;
-    --chart-3: 45 60% 30%;
-    --chart-4: 0 0% 40%;
-    --chart-5: 0 0% 60%;
-    --sidebar: 0 0% 6%;
-    --sidebar-foreground: 45 100% 95%;
-    --sidebar-primary: 45 100% 50%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 45 80% 45%;
-    --sidebar-accent-foreground: 0 0% 5%;
-    --sidebar-border: 45 30% 20%;
-    --sidebar-ring: 45 100% 50%;
+    --border: 0 0% 15%;
+    --input: 0 0% 8.5%;
+    --ring: 0 0% 40%;
+    --chart-1: 0 0% 100%;
+    --chart-2: 0 0% 75%;
+    --chart-3: 0 0% 55%;
+    --chart-4: 0 0% 35%;
+    --chart-5: 0 0% 20%;
+    --sidebar: 0 0% 2%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 17%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 0 0% 40%;
   }
 }
 
@@ -98,57 +121,91 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     font-weight: 400;
   }
 
-  /* Glassmorphism effects */
-  .glass {
-    @apply backdrop-blur-md border;
-    background: rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 215, 0, 0.2);
+  /* Glass Effect - Light */
+  .glass-light {
+    @apply backdrop-blur-xl border rounded-2xl;
+    background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+      0 0 40px rgba(255, 255, 255, 0.03);
   }
-  
+
+  /* Glass Effect - Medium */
+  .glass-medium {
+    @apply backdrop-blur-lg border rounded-2xl;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Glass Effect - Dark */
   .glass-dark {
-    @apply backdrop-blur-md border;
-    background: rgba(0, 0, 0, 0.6);
-    border-color: rgba(255, 215, 0, 0.15);
+    @apply backdrop-blur-md border rounded-2xl;
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.04);
   }
   
+  /* Glass Card - Primary card style */
   .glass-card {
-    @apply backdrop-blur-lg border rounded-xl;
-    background: rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 215, 0, 0.2);
+    @apply backdrop-blur-xl border rounded-2xl;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+      0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Interactive card hover */
+  .glass-card-interactive {
+    @apply glass-card transition-all duration-300;
+  }
+
+  .glass-card-interactive:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      0 8px 40px rgba(0, 0, 0, 0.4);
   }
 }
 
-/* Gold gradient utilities */
+/* Utility classes */
 @layer utilities {
-  .bg-gradient-gold {
-    background: linear-gradient(135deg, hsl(45 100% 50%), hsl(35 100% 40%));
-  }
-  
-  .text-gradient-gold {
-    background: linear-gradient(135deg, hsl(45 100% 50%), hsl(35 100% 40%));
+  /* Text gradient - subtle white to gray */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(0 0% 75%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
-  .shadow-gold {
-    box-shadow: 0 4px 20px hsl(45 100% 50% / 0.3);
+
+  /* Glow effects */
+  .glow-white {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 40px rgba(255, 255, 255, 0.08);
   }
-  
-  .shadow-gold-lg {
-    box-shadow: 0 8px 30px hsl(45 100% 50% / 0.4);
+
+  .glow-white-lg {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 0 60px rgba(255, 255, 255, 0.1);
   }
-  
-  .border-gold {
-    border-color: hsl(45 100% 50% / 0.3);
+
+  /* Subtle inner glow */
+  .inner-glow {
+    box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.05);
   }
-  
-  .glow-gold {
-    box-shadow: 0 0 20px hsl(45 100% 50% / 0.4), 0 0 40px hsl(45 100% 50% / 0.2);
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   }
 }

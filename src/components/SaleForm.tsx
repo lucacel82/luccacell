@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -60,73 +59,69 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
   };
 
   return (
-    <Card className="glass-card shadow-md">
-      <CardHeader>
-        <CardTitle className="text-primary flex items-center gap-2 font-poppins">
-          <Plus className="h-5 w-5" />
-          Registrar Nova Venda
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="glass-card p-6">
+      <h3 className="text-lg font-semibold text-foreground flex items-center gap-2 mb-6">
+        <Plus className="h-5 w-5" />
+        Registrar Nova Venda
+      </h3>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="productName" className="text-foreground">
+            Nome do Produto *
+          </Label>
+          <Input
+            id="productName"
+            type="text"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            placeholder="Ex: iPhone 15, Capinha Samsung..."
+            className="bg-input border-border text-foreground placeholder:text-muted-foreground rounded-xl"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="productName" className="text-foreground">
-              Nome do Produto *
+            <Label htmlFor="quantity" className="text-foreground">
+              Quantidade *
             </Label>
             <Input
-              id="productName"
-              type="text"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
-              placeholder="Ex: iPhone 15, Capinha Samsung..."
-              className="bg-input/80 border-border/50 text-foreground placeholder:text-muted-foreground rounded-xl backdrop-blur-sm"
+              id="quantity"
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              placeholder="1"
+              className="bg-input border-border text-foreground placeholder:text-muted-foreground rounded-xl"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="quantity" className="text-foreground">
-                Quantidade *
-              </Label>
-              <Input
-                id="quantity"
-                type="number"
-                min="1"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                placeholder="1"
-                className="bg-input/80 border-border/50 text-foreground placeholder:text-muted-foreground rounded-xl backdrop-blur-sm"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="value" className="text-foreground">
-                Valor da Venda (R$) *
-              </Label>
-              <Input
-                id="value"
-                type="number"
-                step="0.01"
-                min="0.01"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                placeholder="0,00"
-                className="bg-input/80 border-border/50 text-foreground placeholder:text-muted-foreground rounded-xl backdrop-blur-sm"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="value" className="text-foreground">
+              Valor da Venda (R$) *
+            </Label>
+            <Input
+              id="value"
+              type="number"
+              step="0.01"
+              min="0.01"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="0,00"
+              className="bg-input border-border text-foreground placeholder:text-muted-foreground rounded-xl"
+            />
           </div>
+        </div>
 
-          <LiquidButton 
-            type="submit" 
-            variant="gold"
-            size="lg"
-            className="w-full font-poppins"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Registrar Venda
-          </LiquidButton>
-        </form>
-      </CardContent>
-    </Card>
+        <LiquidButton 
+          type="submit" 
+          variant="gold"
+          size="lg"
+          className="w-full"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Registrar Venda
+        </LiquidButton>
+      </form>
+    </div>
   );
 };

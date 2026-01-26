@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { GlassButton } from '@/components/ui/glass-button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Edit2, Trash2, List, Save, X } from 'lucide-react';
 import { Sale } from '@/types/sale';
@@ -93,127 +92,123 @@ export const SalesList = ({ sales, onUpdate, onDelete }: SalesListProps) => {
 
   if (sales.length === 0) {
     return (
-      <Card className="glass-card shadow-md">
-        <CardContent className="flex flex-col items-center justify-center py-8">
+      <div className="glass-card p-8">
+        <div className="flex flex-col items-center justify-center">
           <List className="h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-muted-foreground text-center font-poppins">
+          <p className="text-muted-foreground text-center">
             Nenhuma venda registrada nos últimos 30 dias.
             <br />
             Registre sua primeira venda usando o formulário acima.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="glass-card shadow-md">
-      <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2 font-poppins">
-            <List className="h-5 w-5" />
-            Vendas Recentes ({sales.length})
-          </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {sales.map((sale) => (
-            <div
-              key={sale.id}
-              className="bg-secondary/50 border border-border/50 rounded-xl p-4 transition-colors backdrop-blur-sm"
-            >
-              {editingId === sale.id ? (
-                <div className="space-y-3">
+    <div className="glass-card p-6">
+      <h3 className="text-lg font-semibold text-foreground flex items-center gap-2 mb-6">
+        <List className="h-5 w-5" />
+        Vendas Recentes ({sales.length})
+      </h3>
+      <div className="space-y-4">
+        {sales.map((sale) => (
+          <div
+            key={sale.id}
+            className="bg-secondary/50 border border-border/50 rounded-2xl p-4 transition-all duration-300 hover:bg-secondary/70"
+          >
+            {editingId === sale.id ? (
+              <div className="space-y-3">
+                <Input
+                  value={editForm.productName}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, productName: e.target.value }))}
+                  placeholder="Nome do produto"
+                  className="bg-input border-border text-foreground rounded-xl"
+                />
+                <div className="grid grid-cols-2 gap-2">
                   <Input
-                    value={editForm.productName}
-                    onChange={(e) => setEditForm(prev => ({ ...prev, productName: e.target.value }))}
-                    placeholder="Nome do produto"
-                    className="bg-input border-border text-foreground"
+                    type="number"
+                    min="1"
+                    value={editForm.quantity}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, quantity: e.target.value }))}
+                    placeholder="Quantidade"
+                    className="bg-input border-border text-foreground rounded-xl"
                   />
-                  <div className="grid grid-cols-2 gap-2">
-                    <Input
-                      type="number"
-                      min="1"
-                      value={editForm.quantity}
-                      onChange={(e) => setEditForm(prev => ({ ...prev, quantity: e.target.value }))}
-                      placeholder="Quantidade"
-                      className="bg-input border-border text-foreground"
-                    />
-                    <Input
-                      type="number"
-                      step="0.01"
-                      min="0.01"
-                      value={editForm.value}
-                      onChange={(e) => setEditForm(prev => ({ ...prev, value: e.target.value }))}
-                      placeholder="Valor"
-                      className="bg-input border-border text-foreground"
-                    />
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    value={editForm.value}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, value: e.target.value }))}
+                    placeholder="Valor"
+                    className="bg-input border-border text-foreground rounded-xl"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <GlassButton
+                    size="sm"
+                    variant="default"
+                    onClick={() => saveEdit(sale.id)}
+                    className="flex-1"
+                  >
+                    <Save className="h-4 w-4 mr-2" />
+                    Salvar
+                  </GlassButton>
+                  <GlassButton
+                    size="sm"
+                    variant="outline"
+                    onClick={cancelEdit}
+                    className="flex-1"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Cancelar
+                  </GlassButton>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="font-medium text-foreground">{sale.nome_produto}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(sale.data_venda)}
+                    </p>
                   </div>
-                  <div className="flex gap-2">
-                    <GlassButton
-                      size="sm"
-                      variant="gold"
-                      onClick={() => saveEdit(sale.id)}
-                      className="flex-1 font-poppins"
-                    >
-                      <Save className="h-4 w-4 mr-2" />
-                      Salvar
-                    </GlassButton>
-                    <GlassButton
-                      size="sm"
-                      variant="outline"
-                      onClick={cancelEdit}
-                      className="flex-1 font-poppins"
-                    >
-                      <X className="h-4 w-4 mr-2" />
-                      Cancelar
-                    </GlassButton>
+                  <div className="text-right">
+                    <div className="text-xl font-bold text-foreground">
+                      {formatCurrency(sale.valor)}
+                    </div>
+                    <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
+                      Qtd: {sale.quantidade}
+                    </Badge>
                   </div>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <h3 className="font-medium text-foreground font-poppins">{sale.nome_produto}</h3>
-                      <p className="text-sm text-muted-foreground font-poppins">
-                        {formatDate(sale.data_venda)}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xl font-bold text-primary font-poppins">
-                        {formatCurrency(sale.valor)}
-                      </div>
-                      <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground font-poppins">
-                        Qtd: {sale.quantidade}
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-2 pt-2">
-                    <GlassButton
-                      size="sm"
-                      variant="glass"
-                      onClick={() => startEdit(sale)}
-                      className="flex-1 font-poppins"
-                    >
-                      <Edit2 className="h-4 w-4 mr-2" />
-                      Editar
-                    </GlassButton>
-                    <GlassButton
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDelete(sale.id)}
-                      className="flex-1 font-poppins"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Excluir
-                    </GlassButton>
-                  </div>
+                
+                <div className="flex gap-2 pt-2">
+                  <GlassButton
+                    size="sm"
+                    variant="glass"
+                    onClick={() => startEdit(sale)}
+                    className="flex-1"
+                  >
+                    <Edit2 className="h-4 w-4 mr-2" />
+                    Editar
+                  </GlassButton>
+                  <GlassButton
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDelete(sale.id)}
+                    className="flex-1"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Excluir
+                  </GlassButton>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
