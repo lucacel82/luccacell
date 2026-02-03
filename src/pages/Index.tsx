@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, ShoppingBag, FileText } from 'lucide-react';
+import { BarChart3, ShoppingBag, FileText, LayoutDashboard } from 'lucide-react';
 import { SaleForm } from '@/components/SaleForm';
 import { SalesList } from '@/components/SalesList';
 import { WeeklyReport } from '@/components/WeeklyReport';
 import { DailyReport } from '@/components/DailyReport';
 import { CashClosing } from '@/components/CashClosing';
+import { Dashboard } from '@/components/Dashboard';
 import { useSales } from '@/hooks/useSales';
 
 const Index = () => {
   const { sales, loading, addSale, updateSale, deleteSale, getDailyReport, getDailySales, getWeeklyReport } = useSales();
-  const [activeTab, setActiveTab] = useState('sales');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const dailyReport = getDailyReport();
   const dailySales = getDailySales();
@@ -47,29 +48,40 @@ const Index = () => {
         <DailyReport report={dailyReport} />
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 glass-card p-1.5">
+          <TabsList className="grid w-full grid-cols-4 glass-card p-1.5">
+            <TabsTrigger 
+              value="dashboard" 
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              <span className="hidden sm:inline">Dashboard</span>
+            </TabsTrigger>
             <TabsTrigger 
               value="sales" 
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
             >
               <ShoppingBag className="h-4 w-4" />
-              <span className="hidden sm:inline">Registrar</span> Vendas
+              <span className="hidden sm:inline">Vendas</span>
             </TabsTrigger>
             <TabsTrigger 
               value="report" 
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
             >
               <BarChart3 className="h-4 w-4" />
-              Relatório<span className="hidden sm:inline">s</span>
+              <span className="hidden sm:inline">Relatórios</span>
             </TabsTrigger>
             <TabsTrigger 
               value="closing" 
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
             >
               <FileText className="h-4 w-4" />
-              Fechar <span className="hidden sm:inline">Caixa</span>
+              <span className="hidden sm:inline">Caixa</span>
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="dashboard" className="mt-6">
+            <Dashboard />
+          </TabsContent>
 
           <TabsContent value="sales" className="space-y-6 mt-6">
             <SaleForm onSubmit={addSale} />
