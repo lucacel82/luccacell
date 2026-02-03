@@ -1,11 +1,14 @@
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { 
   TrendingUp, 
+  TrendingDown,
   DollarSign, 
   ShoppingCart, 
   Target,
   Calendar,
-  Package
+  Package,
+  ArrowUpRight,
+  ArrowDownRight
 } from 'lucide-react';
 import {
   AreaChart,
@@ -20,6 +23,42 @@ import {
   Cell,
 } from 'recharts';
 
+interface ComparisonBadgeProps {
+  percentChange: number;
+  isPositive: boolean;
+  previousValue: number;
+  label: string;
+}
+
+const ComparisonBadge = ({ percentChange, isPositive, previousValue, label }: ComparisonBadgeProps) => {
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
+  };
+
+  if (previousValue === 0 && percentChange === 0) {
+    return (
+      <div className="text-xs text-muted-foreground mt-1">
+        Sem dados {label}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`flex items-center gap-1 mt-1 text-xs ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+      {isPositive ? (
+        <ArrowUpRight className="h-3 w-3" />
+      ) : (
+        <ArrowDownRight className="h-3 w-3" />
+      )}
+      <span>{isPositive ? '+' : ''}{percentChange.toFixed(1)}%</span>
+      <span className="text-muted-foreground ml-1">vs {label}</span>
+    </div>
+  );
+};
+
 export const Dashboard = () => {
   const {
     dailySales,
@@ -30,6 +69,9 @@ export const Dashboard = () => {
     salesCount,
     avgTicket,
     loading,
+    todayComparison,
+    weekComparison,
+    monthComparison,
   } = useDashboardData();
 
   const formatCurrency = (value: number) => {
@@ -54,6 +96,7 @@ export const Dashboard = () => {
             <div key={i} className="glass-card p-4 animate-pulse">
               <div className="h-4 bg-muted rounded w-1/2 mb-2" />
               <div className="h-8 bg-muted rounded w-3/4" />
+              <div className="h-3 bg-muted rounded w-2/3 mt-2" />
             </div>
           ))}
         </div>
@@ -71,7 +114,7 @@ export const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* KPI Cards */}
+      {/* KPI Cards with Comparisons */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="glass-card-interactive p-4 group">
           <div className="flex items-center gap-3">
@@ -81,6 +124,12 @@ export const Dashboard = () => {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-muted-foreground truncate">Hoje</p>
               <p className="text-lg font-bold text-foreground truncate">{formatCurrency(totalToday)}</p>
+              <ComparisonBadge 
+                percentChange={todayComparison.percentChange}
+                isPositive={todayComparison.isPositive}
+                previousValue={todayComparison.previous}
+                label="ontem"
+              />
             </div>
           </div>
         </div>
@@ -93,6 +142,12 @@ export const Dashboard = () => {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-muted-foreground truncate">Semana</p>
               <p className="text-lg font-bold text-foreground truncate">{formatCurrency(totalWeek)}</p>
+              <ComparisonBadge 
+                percentChange={weekComparison.percentChange}
+                isPositive={weekComparison.isPositive}
+                previousValue={weekComparison.previous}
+                label="sem. ant."
+              />
             </div>
           </div>
         </div>
@@ -100,11 +155,21 @@ export const Dashboard = () => {
         <div className="glass-card-interactive p-4 group">
           <div className="flex items-center gap-3">
             <div className="bg-primary/20 rounded-xl p-2.5 group-hover:bg-primary/30 transition-colors">
-              <TrendingUp className="h-5 w-5 text-primary" />
+              {monthComparison.isPositive ? (
+                <TrendingUp className="h-5 w-5 text-primary" />
+              ) : (
+                <TrendingDown className="h-5 w-5 text-primary" />
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs text-muted-foreground truncate">Mês</p>
               <p className="text-lg font-bold text-foreground truncate">{formatCurrency(totalMonth)}</p>
+              <ComparisonBadge 
+                percentChange={monthComparison.percentChange}
+                isPositive={monthComparison.isPositive}
+                previousValue={monthComparison.previous}
+                label="mês ant."
+              />
             </div>
           </div>
         </div>
@@ -117,6 +182,96 @@ export const Dashboard = () => {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-muted-foreground truncate">Ticket Médio</p>
               <p className="text-lg font-bold text-foreground truncate">{formatCurrency(avgTicket)}</p>
+              <div className="text-xs text-muted-foreground mt-1">
+                {salesCount} vendas
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Comparison Cards - Detailed View */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="glass-card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm text-muted-foreground">Hoje vs Ontem</span>
+            <div className={`flex items-center gap-1 text-sm font-medium ${todayComparison.isPositive ? 'text-green-400' : 'text-red-400'}`}>
+              {todayComparison.isPositive ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
+              {todayComparison.percentChange.toFixed(1)}%
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">Hoje</span>
+              <span className="text-sm font-semibold text-foreground">{formatCurrency(todayComparison.current)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">Ontem</span>
+              <span className="text-sm text-muted-foreground">{formatCurrency(todayComparison.previous)}</span>
+            </div>
+            <div className="w-full bg-secondary rounded-full h-2 mt-2">
+              <div 
+                className={`h-2 rounded-full transition-all duration-500 ${todayComparison.isPositive ? 'bg-green-500' : 'bg-red-500'}`}
+                style={{ 
+                  width: `${Math.min(100, Math.max(0, todayComparison.previous > 0 ? (todayComparison.current / todayComparison.previous) * 50 : todayComparison.current > 0 ? 100 : 0))}%` 
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="glass-card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm text-muted-foreground">Esta Semana vs Anterior</span>
+            <div className={`flex items-center gap-1 text-sm font-medium ${weekComparison.isPositive ? 'text-green-400' : 'text-red-400'}`}>
+              {weekComparison.isPositive ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
+              {weekComparison.percentChange.toFixed(1)}%
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">Esta semana</span>
+              <span className="text-sm font-semibold text-foreground">{formatCurrency(weekComparison.current)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">Semana anterior</span>
+              <span className="text-sm text-muted-foreground">{formatCurrency(weekComparison.previous)}</span>
+            </div>
+            <div className="w-full bg-secondary rounded-full h-2 mt-2">
+              <div 
+                className={`h-2 rounded-full transition-all duration-500 ${weekComparison.isPositive ? 'bg-green-500' : 'bg-red-500'}`}
+                style={{ 
+                  width: `${Math.min(100, Math.max(0, weekComparison.previous > 0 ? (weekComparison.current / weekComparison.previous) * 50 : weekComparison.current > 0 ? 100 : 0))}%` 
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="glass-card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm text-muted-foreground">Este Mês vs Anterior</span>
+            <div className={`flex items-center gap-1 text-sm font-medium ${monthComparison.isPositive ? 'text-green-400' : 'text-red-400'}`}>
+              {monthComparison.isPositive ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
+              {monthComparison.percentChange.toFixed(1)}%
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">Este mês</span>
+              <span className="text-sm font-semibold text-foreground">{formatCurrency(monthComparison.current)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-muted-foreground">Mês anterior</span>
+              <span className="text-sm text-muted-foreground">{formatCurrency(monthComparison.previous)}</span>
+            </div>
+            <div className="w-full bg-secondary rounded-full h-2 mt-2">
+              <div 
+                className={`h-2 rounded-full transition-all duration-500 ${monthComparison.isPositive ? 'bg-green-500' : 'bg-red-500'}`}
+                style={{ 
+                  width: `${Math.min(100, Math.max(0, monthComparison.previous > 0 ? (monthComparison.current / monthComparison.previous) * 50 : monthComparison.current > 0 ? 100 : 0))}%` 
+                }}
+              />
             </div>
           </div>
         </div>
