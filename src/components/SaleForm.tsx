@@ -106,13 +106,13 @@ export const SaleForm = ({ onSubmit }: SaleFormProps) => {
             autoComplete="off"
           />
           {showSuggestions && filtered.length > 0 && (
-            <div className="absolute z-50 top-full left-0 right-0 mt-1 glass-card border border-border rounded-xl max-h-48 overflow-y-auto">
+            <div className="absolute z-[100] top-[calc(100%+4px)] left-0 right-0 bg-card border border-border rounded-xl max-h-48 overflow-y-auto shadow-lg">
               {filtered.map(p => (
                 <button
                   key={p.id}
                   type="button"
                   onClick={() => selectProduct(p.nome, Number(p.preco))}
-                  className="w-full text-left px-4 py-2.5 hover:bg-accent/50 transition-colors flex justify-between items-center text-sm"
+                  className="w-full text-left px-4 py-2.5 hover:bg-accent transition-colors flex justify-between items-center text-sm border-b border-border/50 last:border-0"
                 >
                   <span className="text-foreground font-medium truncate">{p.nome}</span>
                   <span className="text-muted-foreground shrink-0 ml-2">R$ {Number(p.preco).toFixed(2)}</span>
