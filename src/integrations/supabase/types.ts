@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      produtos: {
+        Row: {
+          created_at: string
+          estoque: number
+          id: string
+          nome: string
+          preco: number
+        }
+        Insert: {
+          created_at?: string
+          estoque?: number
+          id?: string
+          nome: string
+          preco?: number
+        }
+        Update: {
+          created_at?: string
+          estoque?: number
+          id?: string
+          nome?: string
+          preco?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           business_name: string | null

@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, ShoppingBag, FileText, LayoutDashboard } from 'lucide-react';
+import { BarChart3, ShoppingBag, FileText, LayoutDashboard, Package } from 'lucide-react';
 import { SaleForm } from '@/components/SaleForm';
 import { SalesList } from '@/components/SalesList';
 import { WeeklyReport } from '@/components/WeeklyReport';
 import { DailyReport } from '@/components/DailyReport';
 import { CashClosing } from '@/components/CashClosing';
 import { Dashboard } from '@/components/Dashboard';
+import { Products } from '@/components/Products';
 import { useSales } from '@/hooks/useSales';
 
 const Index = () => {
@@ -48,7 +49,7 @@ const Index = () => {
         <DailyReport report={dailyReport} />
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 glass-card p-1.5">
+          <TabsList className="grid w-full grid-cols-5 glass-card p-1.5">
             <TabsTrigger 
               value="dashboard" 
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
@@ -69,6 +70,13 @@ const Index = () => {
             >
               <BarChart3 className="h-4 w-4" />
               <span className="hidden sm:inline">Relatórios</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="products" 
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
+            >
+              <Package className="h-4 w-4" />
+              <span className="hidden sm:inline">Produtos</span>
             </TabsTrigger>
             <TabsTrigger 
               value="closing" 
@@ -100,6 +108,10 @@ const Index = () => {
 
           <TabsContent value="report" className="mt-6">
             <WeeklyReport report={weeklyReport} />
+          </TabsContent>
+
+          <TabsContent value="products" className="mt-6">
+            <Products />
           </TabsContent>
 
           <TabsContent value="closing" className="mt-6">
