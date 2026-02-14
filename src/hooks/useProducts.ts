@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 export interface Product {
   id: string;
@@ -18,6 +19,7 @@ export interface ProductInput {
 export const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -41,7 +43,8 @@ export const useProducts = () => {
       nome: input.nome,
       preco: input.preco,
       estoque: input.estoque,
-    });
+      user_id: user?.id,
+    } as any);
     if (!error) await fetchProducts();
     return !error;
   };

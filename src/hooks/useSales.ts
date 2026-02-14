@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Sale, WeeklyReport, DailyReport } from '@/types/sale';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 export type SaleInput = Omit<Sale, 'id' | 'data_venda'>;
 
@@ -14,6 +15,7 @@ export const useSales = () => {
     sales: [],
   });
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Load only today's sales from Supabase on component mount
   useEffect(() => {
@@ -110,7 +112,8 @@ export const useSales = () => {
         .insert([{
           nome_produto: sale.nome_produto,
           quantidade: sale.quantidade,
-          valor: sale.valor
+          valor: sale.valor,
+          user_id: user?.id
         }])
         .select()
         .maybeSingle();

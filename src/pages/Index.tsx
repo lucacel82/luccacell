@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, ShoppingBag, FileText, LayoutDashboard, Package } from 'lucide-react';
+import { BarChart3, ShoppingBag, FileText, LayoutDashboard, Package, LogOut } from 'lucide-react';
 import { SaleForm } from '@/components/SaleForm';
 import { SalesList } from '@/components/SalesList';
 import { WeeklyReport } from '@/components/WeeklyReport';
@@ -9,10 +9,15 @@ import { CashClosing } from '@/components/CashClosing';
 import { Dashboard } from '@/components/Dashboard';
 import { Products } from '@/components/Products';
 import { useSales } from '@/hooks/useSales';
+import { useAuth } from '@/hooks/useAuth';
+import { useClaimOrphanData } from '@/hooks/useClaimOrphanData';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const { sales, loading, addSale, updateSale, deleteSale, getDailyReport, getDailySales, getWeeklyReport } = useSales();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const { user, signOut } = useAuth();
+  useClaimOrphanData(user);
 
   const dailyReport = getDailyReport();
   const dailySales = getDailySales();
@@ -39,6 +44,15 @@ const Index = () => {
                 Assistência Técnica & Acessórios
               </p>
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={signOut}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <LogOut className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Sair</span>
+            </Button>
           </div>
         </div>
       </div>
