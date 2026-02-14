@@ -10,14 +10,12 @@ import { Dashboard } from '@/components/Dashboard';
 import { Products } from '@/components/Products';
 import { useSales } from '@/hooks/useSales';
 import { useAuth } from '@/hooks/useAuth';
-import { useClaimOrphanData } from '@/hooks/useClaimOrphanData';
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const { sales, loading, addSale, updateSale, deleteSale, getDailyReport, getDailySales, getWeeklyReport } = useSales();
   const [activeTab, setActiveTab] = useState('dashboard');
   const { user, signOut } = useAuth();
-  useClaimOrphanData(user);
 
   const dailyReport = getDailyReport();
   const dailySales = getDailySales();
