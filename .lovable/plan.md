@@ -1,33 +1,59 @@
 
 
-# Sistema de Login e Associacao de Dados
+# Impressao de Etiquetas via Navegador
 
-## Objetivo
-Ativar o sistema de login (que ja existe no codigo mas nao esta conectado) e associar todos os dados existentes (vendas e produtos) a conta do usuario apos o primeiro login.
+## Resumo
+Adicionar funcionalidade de impressao de etiquetas de produtos apos registrar uma venda. A etiqueta sera gerada como HTML formatado para impressoras termicas (58mm/80mm) e impressa usando `window.print()`. Tambem sera adicionada uma tela de configuracoes da impressora.
+
+## O que muda para voce
+- Apos registrar uma venda, aparece um botao "Imprimir Etiqueta"
+- A etiqueta mostra: nome da loja, produto, preco, codigo, codigo de barras e data
+- Uma nova aba "Config" permite ajustar largura da etiqueta e impressao automatica
+- Funciona com qualquer impressora configurada no computador
 
 ## Etapas
 
-### 1. Migracao no Banco de Dados
-- Adicionar coluna `user_id` na tabela `produtos` (a tabela `vendas` ja possui)
-- Atualizar as politicas RLS de ambas as tabelas (`vendas` e `produtos`) para restringir acesso por usuario autenticado
-- Manter politica temporaria que permite ao usuario autenticado "reivindicar" registros orfaos (onde `user_id IS NULL`)
+### 1. Adicionar campo de codigo de barras nos produtos
+A tabela `produtos` nao possui campo para codigo de barras. Sera adicionada uma coluna `codigo_barras` (texto, opcional).
 
-### 2. Ativar Autenticacao no App
-- Envolver o App com o `AuthProvider` (ja existe em `src/components/AuthProvider.tsx`)
-- Proteger as rotas `/` e `/chefe` com o `ProtectedRoute` (ja existe em `src/components/ProtectedRoute.tsx`)
-- Adicionar a rota `/auth` apontando para a pagina de login (ja existe em `src/pages/Auth.tsx`)
+### 2. Instalar bibliotecas de codigo de barras e QR Code
+- `jsbarcode` - para gerar codigos de barras no canvas
+- `qrcode` (ou `qrcode.react`) - para gerar QR Codes
 
-### 3. Migrar Dados Existentes ao Primeiro Login
-- Criar um efeito que, apos o usuario fazer login, execute um UPDATE nas tabelas `vendas` e `produtos` para associar todos os registros com `user_id IS NULL` ao `auth.uid()` do usuario logado
-- Isso garante que os dados ja cadastrados nao sejam perdidos
+### 3. Criar servico de impressao (`src/services/printService.ts`)
+- Funcao `printProductLabel(product, sale, config)` que:
+  - Cria uma janela popup com HTML formatado para etiqueta
+  - Aplica CSS de impressao otimizado para 58mm ou 80mm
+  - Inclui codigo de barras (canvas) e QR Code (com ID da venda)
+  - Chama `window.print()` na janela popup
+  - Fecha a janela apos impressao
 
-### 4. Atualizar Hooks de Dados
-- `useSales.ts`: incluir `user_id` do usuario logado ao inserir novas vendas
-- `useProducts.ts`: incluir `user_id` do usuario logado ao inserir novos produtos e filtrar por usuario nas consultas
-- `useDashboardData.ts` e demais hooks: garantir que as queries ja funcionam corretamente com os dados filtrados por RLS
+### 4. Criar hook de configuracoes (`src/hooks/usePrinterSettings.ts`)
+- Armazena configuracoes em `localStorage`:
+  - Largura: 58mm ou 80mm
+  - Impressao automatica apos venda: sim/nao
+  - Nome da loja (padrao: "LUCCA CELL")
 
-### 5. Adicionar Botao de Logout
-- Adicionar um botao de logout no header da pagina principal (`Index.tsx`) para o usuario poder sair da conta
+### 5. Criar componente de configuracoes (`src/components/PrinterSettings.tsx`)
+- Tela simples com:
+  - Selecao de largura (58mm / 80mm)
+  - Toggle de impressao automatica
+  - Campo para nome da loja
+- Segue o visual existente (glass-card, rounded-xl, etc.)
+
+### 6. Atualizar formulario de venda (`src/components/SaleForm.tsx`)
+- Apos registrar venda com sucesso:
+  - Se impressao automatica ativada: imprimir etiqueta direto
+  - Senao: exibir dialog com botao "Imprimir Etiqueta"
+- Toast de sucesso/erro conforme resultado
+
+### 7. Atualizar cadastro de produtos (`src/components/Products.tsx`)
+- Adicionar campo opcional "Codigo de Barras" no formulario
+- Exibir codigo de barras na listagem quando existir
+
+### 8. Adicionar aba "Config" no menu (`src/pages/Index.tsx`)
+- Nova aba com icone de engrenagem (Settings)
+- Conteudo: componente PrinterSettings
 
 ---
 
@@ -35,49 +61,46 @@ Ativar o sistema de login (que ja existe no codigo mas nao esta conectado) e ass
 
 ### Migracao SQL
 ```sql
--- Adicionar user_id em produtos
-ALTER TABLE public.produtos ADD COLUMN user_id uuid REFERENCES auth.users(id);
-
--- Remover politicas publicas antigas de vendas
-DROP POLICY IF EXISTS "Allow public read access to vendas" ON public.vendas;
-DROP POLICY IF EXISTS "Allow public insert access to vendas" ON public.vendas;
-DROP POLICY IF EXISTS "Allow public update access to vendas" ON public.vendas;
-DROP POLICY IF EXISTS "Allow public delete access to vendas" ON public.vendas;
-
--- Novas politicas para vendas (por usuario)
-CREATE POLICY "Users can view own vendas" ON public.vendas FOR SELECT TO authenticated USING (user_id = auth.uid() OR user_id IS NULL);
-CREATE POLICY "Users can insert own vendas" ON public.vendas FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid());
-CREATE POLICY "Users can update own vendas" ON public.vendas FOR UPDATE TO authenticated USING (user_id = auth.uid() OR user_id IS NULL);
-CREATE POLICY "Users can delete own vendas" ON public.vendas FOR DELETE TO authenticated USING (user_id = auth.uid() OR user_id IS NULL);
-
--- Remover politicas publicas antigas de produtos
-DROP POLICY IF EXISTS "Allow public read access to produtos" ON public.produtos;
-DROP POLICY IF EXISTS "Allow public insert access to produtos" ON public.produtos;
-DROP POLICY IF EXISTS "Allow public update access to produtos" ON public.produtos;
-DROP POLICY IF EXISTS "Allow public delete access to produtos" ON public.produtos;
-
--- Novas politicas para produtos (por usuario)
-CREATE POLICY "Users can view own produtos" ON public.produtos FOR SELECT TO authenticated USING (user_id = auth.uid() OR user_id IS NULL);
-CREATE POLICY "Users can insert own produtos" ON public.produtos FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid());
-CREATE POLICY "Users can update own produtos" ON public.produtos FOR UPDATE TO authenticated USING (user_id = auth.uid() OR user_id IS NULL);
-CREATE POLICY "Users can delete own produtos" ON public.produtos FOR DELETE TO authenticated USING (user_id = auth.uid() OR user_id IS NULL);
+ALTER TABLE public.produtos ADD COLUMN codigo_barras text;
 ```
 
-### Logica de Reivindicacao de Dados
-Ao detectar o primeiro login, executar:
-```typescript
-await supabase.from('vendas').update({ user_id: user.id }).is('user_id', null);
-await supabase.from('produtos').update({ user_id: user.id }).is('user_id', null);
+### Estrutura da etiqueta (HTML para impressao)
+```text
++---------------------------+
+|       LUCCA CELL          |  (centralizado, fonte normal)
+|                           |
+|   CAPINHA IPHONE 15       |  (negrito, fonte grande)
+|                           |
+|      R$ 49,90             |  (fonte extra grande, destaque)
+|                           |
+|   Cod: abc123             |  (fonte pequena)
+|   |||||||||||||||||||      |  (codigo de barras)
+|                           |
+|   [QR CODE - ID venda]    |  (QR code pequeno)
+|                           |
+|   16/02/2026              |  (data da venda)
++---------------------------+
 ```
 
-### Arquivos Modificados
-- `src/App.tsx` - adicionar AuthProvider, ProtectedRoute e rota /auth
-- `src/hooks/useSales.ts` - incluir user_id nas insercoes
-- `src/hooks/useProducts.ts` - incluir user_id nas insercoes
-- `src/pages/Index.tsx` - adicionar botao de logout no header
+### CSS de impressao
+- `@media print` para ocultar tudo exceto a etiqueta
+- `@page { size: 58mm auto; margin: 2mm; }` (ou 80mm)
+- Fonte monospacada para melhor leitura em termicas
 
-### Arquivos Ja Existentes (sem alteracao)
-- `src/hooks/useAuth.ts`
-- `src/components/AuthProvider.tsx`
-- `src/components/ProtectedRoute.tsx`
-- `src/pages/Auth.tsx`
+### Arquivos criados
+- `src/services/printService.ts` - logica de formatacao e impressao
+- `src/hooks/usePrinterSettings.ts` - configuracoes em localStorage
+- `src/components/PrinterSettings.tsx` - tela de configuracoes
+- `src/components/PrintLabelDialog.tsx` - dialog pos-venda com botao de imprimir
+
+### Arquivos modificados
+- `src/components/SaleForm.tsx` - integrar impressao apos venda
+- `src/components/Products.tsx` - campo codigo de barras
+- `src/hooks/useProducts.ts` - suporte ao campo codigo_barras
+- `src/pages/Index.tsx` - nova aba Config
+- `src/types/sale.ts` - (sem alteracao, tipos ja atendem)
+
+### Tratamento de erros
+- Se popup bloqueado pelo navegador: toast avisando para permitir popups
+- Se impressao cancelada: nenhum erro, fluxo continua normal
+- Impressao roda de forma assincrona, nao bloqueia o fluxo de venda
