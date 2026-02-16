@@ -7,6 +7,7 @@ export interface Product {
   nome: string;
   preco: number;
   estoque: number;
+  codigo_barras?: string | null;
   created_at: string;
 }
 
@@ -14,6 +15,7 @@ export interface ProductInput {
   nome: string;
   preco: number;
   estoque: number;
+  codigo_barras?: string | null;
 }
 
 export const useProducts = () => {
@@ -43,6 +45,7 @@ export const useProducts = () => {
       nome: input.nome,
       preco: input.preco,
       estoque: input.estoque,
+      codigo_barras: input.codigo_barras || null,
       user_id: user?.id,
     } as any);
     if (!error) await fetchProducts();

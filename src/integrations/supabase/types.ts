@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       produtos: {
         Row: {
+          codigo_barras: string | null
           created_at: string
           estoque: number
           id: string
@@ -24,6 +25,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          codigo_barras?: string | null
           created_at?: string
           estoque?: number
           id?: string
@@ -32,6 +34,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          codigo_barras?: string | null
           created_at?: string
           estoque?: number
           id?: string

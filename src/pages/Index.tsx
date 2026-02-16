@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, ShoppingBag, FileText, LayoutDashboard, Package, LogOut } from 'lucide-react';
+import { BarChart3, ShoppingBag, FileText, LayoutDashboard, Package, LogOut, Settings } from 'lucide-react';
 import { SaleForm } from '@/components/SaleForm';
 import { SalesList } from '@/components/SalesList';
 import { WeeklyReport } from '@/components/WeeklyReport';
@@ -8,6 +8,7 @@ import { DailyReport } from '@/components/DailyReport';
 import { CashClosing } from '@/components/CashClosing';
 import { Dashboard } from '@/components/Dashboard';
 import { Products } from '@/components/Products';
+import { PrinterSettings } from '@/components/PrinterSettings';
 import { useSales } from '@/hooks/useSales';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -61,7 +62,7 @@ const Index = () => {
         <DailyReport report={dailyReport} />
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 glass-card p-1.5">
+          <TabsList className="grid w-full grid-cols-6 glass-card p-1.5">
             <TabsTrigger 
               value="dashboard" 
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
@@ -97,6 +98,13 @@ const Index = () => {
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Caixa</span>
             </TabsTrigger>
+            <TabsTrigger 
+              value="config" 
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-xl transition-all duration-300"
+            >
+              <Settings className="h-4 w-4" />
+              <span className="hidden sm:inline">Config</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard" className="mt-6">
@@ -131,6 +139,10 @@ const Index = () => {
               dailySales={dailySales} 
               dailyTotal={dailyReport.totalValue} 
             />
+          </TabsContent>
+
+          <TabsContent value="config" className="mt-6">
+            <PrinterSettings />
           </TabsContent>
         </Tabs>
       </div>

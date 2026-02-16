@@ -13,11 +13,13 @@ export const Products = () => {
   const [nome, setNome] = useState('');
   const [preco, setPreco] = useState('');
   const [estoque, setEstoque] = useState('');
+  const [codigoBarras, setCodigoBarras] = useState('');
   const [search, setSearch] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editNome, setEditNome] = useState('');
   const [editPreco, setEditPreco] = useState('');
   const [editEstoque, setEditEstoque] = useState('');
+  const [editCodigoBarras, setEditCodigoBarras] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,20 +31,23 @@ export const Products = () => {
       nome: nome.trim(),
       preco: parseFloat(preco),
       estoque: estoque ? parseInt(estoque) : 0,
+      codigo_barras: codigoBarras.trim() || null,
     });
     if (success) {
       setNome('');
       setPreco('');
       setEstoque('');
+      setCodigoBarras('');
       toast({ title: 'Sucesso!', description: 'Produto cadastrado' });
     }
   };
 
-  const startEdit = (p: { id: string; nome: string; preco: number; estoque: number }) => {
+  const startEdit = (p: { id: string; nome: string; preco: number; estoque: number; codigo_barras?: string | null }) => {
     setEditingId(p.id);
     setEditNome(p.nome);
     setEditPreco(String(p.preco));
     setEditEstoque(String(p.estoque));
+    setEditCodigoBarras(p.codigo_barras || '');
   };
 
   const saveEdit = async () => {
@@ -51,6 +56,7 @@ export const Products = () => {
       nome: editNome.trim(),
       preco: parseFloat(editPreco),
       estoque: parseInt(editEstoque),
+      codigo_barras: editCodigoBarras.trim() || null,
     });
     if (success) {
       setEditingId(null);
@@ -109,6 +115,15 @@ export const Products = () => {
                 className="bg-input border-border text-foreground placeholder:text-muted-foreground rounded-xl"
               />
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-foreground">Código de Barras (opcional)</Label>
+            <Input
+              value={codigoBarras}
+              onChange={e => setCodigoBarras(e.target.value)}
+              placeholder="Ex: 7891234567890"
+              className="bg-input border-border text-foreground placeholder:text-muted-foreground rounded-xl"
+            />
           </div>
           <LiquidButton type="submit" variant="gold" size="lg" className="w-full">
             <Plus className="h-4 w-4 mr-2" />
@@ -171,6 +186,7 @@ export const Products = () => {
                     <div className="flex gap-4 text-sm text-muted-foreground">
                       <span>R$ {Number(p.preco).toFixed(2)}</span>
                       <span>Estoque: {p.estoque}</span>
+                      {p.codigo_barras && <span>Cód: {p.codigo_barras}</span>}
                     </div>
                   </div>
                 )}

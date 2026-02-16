@@ -1,0 +1,1 @@
+ALTER TABLE public.produtos ADD COLUMN codigo_barras text;
